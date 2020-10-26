@@ -1,0 +1,10 @@
+#!groovy
+def BUILDNODE='localhost'
+
+node(BUILDNODE) {
+    stage('Build on '+BUILDNODE){
+        sh """
+        pwd
+        """
+    }
+}
