@@ -1,5 +1,5 @@
 #!groovy
-def BUILDNODE='localhost'
+def BUILDNODE='work01'
 
 node(BUILDNODE) {
     stage('Build on '+BUILDNODE){
