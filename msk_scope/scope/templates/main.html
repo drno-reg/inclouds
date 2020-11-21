@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InClouds (c)
+{% endblock %}
+{% block head %}
+
+    <ul class="navbar-nav ml-auto">
+            <a class="p-2 text-dark">{{ user.name }} {{ user.surname }}</a>
+            <a class="btn btn-warning" href="/logout">Выйти</a>
+        </ul>
+
+    {% endblock %}
+{% block body %}
+
+<h2>Вы получили доступ к своему профайлу</h2><br>
+<!--<a href="{{ url_for('authorization_blueprint.logout') }}">Выйти</a>-->
+<!--<form class="form-horizontal" action="/logout">-->
+
+</form>
+{% endblock %}
+

@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InClouds (c)
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="thumbnail">
+                <img src="{{ url_for('static', filename='images/logo1.jpg') }}" alt="Lights" style="width:100%">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+
+<!--                <form method="POST">-->
+<!--                    <table>-->
+<!--                        <tr>-->
+<!--                            <td>Login</td>-->
+<!--                            <td><input type="text" name="login"></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>Password</td>-->
+<!--                            <td><input type="password" name="password"></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td>Password retype</td>-->
+<!--                            <td><input type="password" name="password2"></td>-->
+<!--                        </tr>-->
+<!--                        <tr>-->
+<!--                            <td><a href="{{ url_for('authorization_blueprint.login_page') }}">Login</a></td>-->
+<!--                            <td><input type="submit" value="Register"></td>-->
+<!--                        </tr>-->
+<!--                    </table>-->
+<!--                </form>-->
+
+
+<!--                <form class="form-horizontal" method="POST">-->
+
+
+                <form method="POST">
+                        <label class="control-label col-sm-2" for="login">Регистрация нового пользователя</label>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2" for="login">Логин:</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="login" name="login" placeholder="Введите логин">
+                            </div>
+                        </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="password">Пароль:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="password2">Повторите пароль:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password2" name="password2" placeholder="Введите пароль">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="name">Имя:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Введите имя">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="surname">Фамилия:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="surname" name="surname" placeholder="Введите фамилию">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="company">Введите наименование компании:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="company" name="company" placeholder="Введите наименование компании">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <input type="submit" class="btn btn-outline-success" value="Зарегистрировать">
+                        </div>
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+</div>
+</div>
+{% endblock %}
+
+
+

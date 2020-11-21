@@ -1,0 +1,51 @@
+#- hosts: "{{ TARGET_HOSTS }}"
+- hosts: "localhost"
+  tasks:
+    - name: make docker image
+      shell: |
+        cd /home/drno/IdeaProjects/inclouds/main_server
+        docker build -t drnoreg/inclouds_main_server:0.1 ./
+        docker save drnoreg/inclouds_main_server:0.1 > /opt/docker/images/inclouds_main_server.tar
+        scp -P 12345 /opt/docker/images/inclouds_main_server.tar ansible@89.22.182.136:/opt/docker/images
+#    - name: make docker image
+#      docker_image:
+#        name: drnoreg/inclouds_main_server
+#        tag: 0.1
+#        state: present
+#    - name: push docker image
+#      docker_image:
+#        name: drnoreg/inclouds_main_server:0.1
+#        push: yes
+#        docker push drnoreg/inclouds_main_server:0.1
+#        docker build -t drnoreg/inclouds_main_server:0.1 ./
+- hosts: "89.22.182.136"
+  tasks:
+    - name: check docker image
+      shell: docker ps -a
+      register: dockerps
+      tags: dockerps
+    - debug: msg="{{dockerps.stdout}}"
+    - name: stop and delete docker container
+      shell: |
+        docker stop inclouds_main_server
+        docker rm inclouds_main_server
+        docker rmi drnoreg/inclouds_main_server:0.1
+        docker load -i /opt/docker/images/inclouds_main_server.tar
+#        docker import /opt/docker/images/inclouds_main_server.tar drnoreg/inclouds_main_server:0.1
+#        docker pull drnoreg/inclouds_main_server:0.1
+    - name: pull and start docker container
+      shell: docker run --net inclouds_network --name=inclouds_main_server -d -p 80:80 -p 443:443 -v /opt/docker/main_app/certs:/etc/ssl drnoreg/inclouds_main_server:0.1
+    - name: check docker image
+      shell: docker ps -a
+      register: dockerps
+      tags: dockerps
+    - debug: msg="{{dockerps.stdout}}"
+
+#- host: "localhost"
+#  tasks:
+#    - name: check URL
+#      shell: Test is OK
+#      when: curl https://inclouds.bizml.ru | grep "<td>/main</td>" == "<td>/main</td>"
+#      stat: curl https://inclouds.bizml.ru | grep "<td>/main</td>"
+#      register: st
+#    - include: "if st.stat.exists 'echo '"

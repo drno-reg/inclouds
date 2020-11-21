@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InClouds (c)
+{% endblock %}
+
+{% block body %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="thumbnail">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Lights" style="width:100%">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+
+
+                <form class="form-horizontal" method="POST" action="/login">
+
+                    {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                    <ul class=flashes>
+                        {% for message in messages %}
+                        <li>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endwith %}
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="login">Логин:</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="login" name="login" placeholder="Введите логин">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="password">Пароль:</label>
+                        <div class="col-sm-10">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Введите пароль">
+                        </div>
+                    </div>
+<!--                    <div class="form-group">-->
+<!--                        <div class="col-sm-offset-2 col-sm-10">-->
+<!--                            <div class="checkbox">-->
+<!--                                <label><input type="checkbox"> Запомнить меня</label>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+<!--                            <a class="btn btn-outline-primary" href="{{ url_for('authorization_blueprint.login_page') }}">Войти</a>-->
+                            <input type="submit" class="btn btn-outline-primary" value="Войти">
+                            <a class="btn btn-outline-success" href="{{ url_for('authorization_blueprint.register_page') }}">Зарегистрировать</a>
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<!--<div class="container">-->
+<!--<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">-->
+<!--    <h1 class="display-4">Pricing</h1>-->
+<!--    <p class="lead">Quickly build an effective pricing table for your potential customers with this Bootstrap example. It’s built with default Bootstrap components and utilities with little customization.</p>-->
+<!--</div>-->
+
+<!--        <div class="thumbnail">-->
+
+<!--        </div>-->
+
+
+
+
+
+
+
+<!--    <div class="card-deck mb-3 text-center">-->
+<!--        <div class="card mb-4 shadow-sm">-->
+<!--            <div class="col-md-8">-->
+<!--       -->
+<!--        </div>-->
+
+
+
+
+<!--        </div>-->
+
+<!--        <div class="card-deck mb-3 text-center">-->
+<!--            <div class="card mb-2 shadow-sm">-->
+
+<!--            </div>-->
+<!--                <div class="card mb-5 shadow-sm">-->
+
+<!--                </div>-->
+<!--        </div>-->
+<!--    <div class="card-deck mb-3 text-center">-->
+<!--        <div class="card mb-4 shadow-sm">-->
+<!--            <div class="card-header">-->
+<!--                <h4 class="my-0 font-weight-normal">Free</h4>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <h1 class="card-title pricing-card-title">$0 <small class="text-muted">/ mo</small></h1>-->
+<!--                <ul class="list-unstyled mt-3 mb-4">-->
+<!--                    <li>10 users included</li>-->
+<!--                    <li>2 GB of storage</li>-->
+<!--                    <li>Email support</li>-->
+<!--                    <li>Help center access</li>-->
+<!--                </ul>-->
+<!--                <button type="button" class="btn btn-lg btn-block btn-outline-primary">Sign up for free</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="card mb-4 shadow-sm">-->
+<!--            <div class="card-header">-->
+<!--                <h4 class="my-0 font-weight-normal">Pro</h4>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <h1 class="card-title pricing-card-title">$15 <small class="text-muted">/ mo</small></h1>-->
+<!--                <ul class="list-unstyled mt-3 mb-4">-->
+<!--                    <li>20 users included</li>-->
+<!--                    <li>10 GB of storage</li>-->
+<!--                    <li>Priority email support</li>-->
+<!--                    <li>Help center access</li>-->
+<!--                </ul>-->
+<!--                <button type="button" class="btn btn-lg btn-block btn-primary">Get started</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="card mb-4 shadow-sm">-->
+<!--            <div class="card-header">-->
+<!--                <h4 class="my-0 font-weight-normal">Enterprise</h4>-->
+<!--            </div>-->
+<!--            <div class="card-body">-->
+<!--                <h1 class="card-title pricing-card-title">$29 <small class="text-muted">/ mo</small></h1>-->
+<!--                <ul class="list-unstyled mt-3 mb-4">-->
+<!--                    <li>30 users included</li>-->
+<!--                    <li>15 GB of storage</li>-->
+<!--                    <li>Phone and email support</li>-->
+<!--                    <li>Help center access</li>-->
+<!--                </ul>-->
+<!--                <button type="button" class="btn btn-lg btn-block btn-primary">Contact us</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+{% endblock %}

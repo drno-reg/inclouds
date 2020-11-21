@@ -1,0 +1,289 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InClouds (c)
+{% endblock %}
+{% block head %}
+
+    <ul class="navbar-nav ml-auto">
+            <a class="p-2 text-dark">{{ user.name }} {{ user.surname }} [{{ user.company }}]</a>
+            <a class="btn btn-warning" href="/logout">Выйти</a>
+        </ul>
+
+    {% endblock %}
+{% block body %}
+
+<style>
+    .bigFont li{
+        font-size:20px;
+    }
+</style>
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='jquery.dataTables/jquery-3.5.1.js') }}"></script>
+
+<!--<script src="{{ url_for('static', filename='bootstrap-4.5.2-dist/js/bootstrap.js') }}"></script>-->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='jquery.dataTables/jquery.dataTables.min.css') }}">
+
+
+<script src="{{ url_for('static', filename='jquery.dataTables/jquery.dataTables.min.js') }}"></script>
+
+
+<!--<script src="{{ url_for('static', filename='jquery-tabledit-1.2.3/jquery.tabledit.js') }}"></script>-->
+
+
+
+
+
+<!--<script src="{{ url_for('static', filename='datatables-1.10.22/datatables.js') }}"></script>-->
+<!-- D3.js -->
+<!--<script src="{{ url_for('static', filename='datatables-1.10.22/DataTables-1.10.22/js/jquery.dataTables.min.js') }}"></script>-->
+
+<!--<script src="{{ url_for('static', filename='jquery-tabledit-1.2.3/jquery.tabledit.js') }}"></script>-->
+
+<!--<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+<!--<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">-->
+<!--<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
+<!--<script src="https://www.jqueryscript.net/demo/Creating-A-Live-Editable-Table-with-jQuery-Tabledit/jquery.tabledit.js"></script>-->
+<!--<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">-->
+<!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+
+<div class="container">
+    <div class="page-header page-header-with-icon mg-t" style="text-align:left;">
+<h3>Заказаны:</h3><br>
+
+<!--        <button type="submit">Submit form</button>-->
+<!--        <table id="example" class="display" style="width:100%">-->
+<!--            <thead>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Age</th>-->
+<!--                <th>Position</th>-->
+<!--                <th>Office</th>-->
+<!--            </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--            <tr>-->
+<!--                <td>Tiger Nixon</td>-->
+<!--                <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>-->
+<!--                <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>-->
+<!--                <td><select size="1" id="row-1-office" name="row-1-office">-->
+<!--                    <option value="Edinburgh" selected="selected">-->
+<!--                        Edinburgh-->
+<!--                    </option>-->
+<!--                    <option value="London">-->
+<!--                        London-->
+<!--                    </option>-->
+<!--                    <option value="New York">-->
+<!--                        New York-->
+<!--                    </option>-->
+<!--                    <option value="San Francisco">-->
+<!--                        San Francisco-->
+<!--                    </option>-->
+<!--                    <option value="Tokyo">-->
+<!--                        Tokyo-->
+<!--                    </option>-->
+<!--                </select></td>-->
+<!--            </tr>-->
+<!--            </tbody>-->
+<!--            <tfoot>-->
+<!--            <tr>-->
+<!--                <th>Name</th>-->
+<!--                <th>Age</th>-->
+<!--                <th>Position</th>-->
+<!--                <th>Office</th>-->
+<!--            </tr>-->
+<!--            </tfoot>-->
+<!--        </table>-->
+
+
+<!--        <div class="container" style="margin-top:150px;">-->
+<!--            <h1>jQuery Tabledit Plugin Demo</h1>-->
+<!--            <table class="table table-striped table-bordered" id="example">-->
+<!--                <caption>-->
+<!--                    Click the table cells to edit.-->
+<!--                </caption>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>#</th>-->
+<!--                    <th>First Name</th>-->
+<!--                    <th>Last Name</th>-->
+<!--                    <th>Username</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr>-->
+<!--                    <th scope="row">1</th>-->
+<!--                    <td>Mark</td>-->
+<!--                    <td>Otto</td>-->
+<!--                    <td>@mdo</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th scope="row">2</th>-->
+<!--                    <td>Jacob</td>-->
+<!--                    <td>Thornton</td>-->
+<!--                    <td>@fat</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th scope="row">3</th>-->
+<!--                    <td>Larry</td>-->
+<!--                    <td>the Bird</td>-->
+<!--                    <td>@twitter</td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+<!--            <table class="table table-striped table-bordered" id="example-2">-->
+<!--                <caption>-->
+<!--                    Click the table cells to edit.-->
+<!--                </caption>-->
+<!--                <thead>-->
+<!--                <tr>-->
+<!--                    <th>#</th>-->
+<!--                    <th>First</th>-->
+<!--                    <th>Last</th>-->
+<!--                    <th>Nickname</th>-->
+<!--                </tr>-->
+<!--                </thead>-->
+<!--                <tbody>-->
+<!--                <tr>-->
+<!--                    <th scope="row">1</th>-->
+<!--                    <td>Mark</td>-->
+<!--                    <td>Otto</td>-->
+<!--                    <td>@mdo</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th scope="row">2</th>-->
+<!--                    <td>Jacob</td>-->
+<!--                    <td>Thornton</td>-->
+<!--                    <td>@fat</td>-->
+<!--                </tr>-->
+<!--                <tr>-->
+<!--                    <th scope="row">3</th>-->
+<!--                    <td>Larry</td>-->
+<!--                    <td>the Bird</td>-->
+<!--                    <td>@twitter</td>-->
+<!--                </tr>-->
+<!--                </tbody>-->
+<!--            </table>-->
+
+    <ul class="bigFont">
+    <table class="table table-striped table-bordered" id="orders_table">
+<thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Наименование</th>
+                            <th>Описание</th>
+                            <th>Параметры</th>
+                            <th>Гео</th>
+                        </tr>
+       </thead>
+        <tbody>
+    {% for result_line in orders %}
+    <tr><td>{{loop.index}}</td><td>{{result_line.name}}</td><td>{{result_line.describe}}</td><td>{{result_line.parameters}}</td><td><a href="{{ url_for('chart_datetime_picker') }}?id_orders={{ result_line.id }}&id_scope_describe={{ result_line.name }} - {{result_line.parameters }}">Посмотреть график на {{result_line.executors}}</a></td></tr>
+    {% endfor %}
+        </tbody>
+    </table>
+    </ul>
+<!--<a href="{{ url_for('authorization_blueprint.logout') }}">Выйти</a>-->
+<!--<form class="form-horizontal" action="/logout">-->
+<!--        <ul class="bigFont">-->
+<!--            {% for metric in metrics %}-->
+<!--            <li><b></b></li>-->
+<!--            {% endfor %}-->
+<!--        </ul>-->
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript">
+    var user = '{{ user.company }}';
+    var metrics = '{{metrics}}';
+    var orders = '{{orders}}';
+    console.log("user: "+ user)
+    console.log("metrics: "+ metrics)
+    console.log("orders: "+ orders)
+
+    URL_path=window.location.origin+window.location.pathname+window.location.search
+    console.log("URL = "+URL_path)
+    window.history.replaceState({}, '',"/main")
+    $(document).ready(function() {
+        var table = $('#example').DataTable({
+            columnDefs: [{
+                orderable: false,
+                targets: [1,2,3]
+            }]
+        });
+
+        $('button').click( function() {
+            var data = table.$('input, select').serialize();
+            alert(
+                "The following data would have been submitted to the server: \n\n"+
+                data.substr( 0, 120 )+'...'
+            );
+            return false;
+        } );
+    } );
+
+
+    // $('#example').Tabledit({
+    //     editButton: false,
+    //     removeButton: false,
+    //     columns: {
+    //         identifier: [0, 'id'],
+    //         editable: [[1, 'First Name'],[2, 'Last Name'],[3, 'Username', '{"1": "@mdo", "2": "@fat", "3": "@twitter"}']]
+    //     }
+    // });
+    // $('#example-2').Tabledit({
+    //     columns: {
+    //         identifier: [0, 'id'],
+    //         editable: [[1, 'First'],[2, 'Last'],[3, 'Nickname', '{"1": "@mdo", "2": "@fat", "3": "@twitter"}']]
+    //     }
+    // });
+</script>
+
+    <script type="text/javascript">
+
+    // $('#tableedit_example1').DataTable();
+    //
+    // $('#tableedit_example1').Tabledit({
+    //     editButton: true,
+    //     removeButton: true,
+    //     addBucket:true,
+    //         deleteButton: true,
+    //         saveButton: true,
+    //     columns: {
+    //         identifier: [0, 'id'],
+    //         editable: [[1, 'First Name'],[2, 'Last Name'],[3, 'Username', '{"1": "@mdo", "2": "@fat", "3": "@twitter"}']]
+    //     }
+    // });
+
+    // $('#tableedit_example').Tabledit({
+    //     // url: 'example.php',
+    //     deleteButton: true,
+    //     saveButton: true,
+    //     autoFocus: false,
+    //     buttons: {
+    //         edit: {
+    //             class: 'btn btn-sm btn-primary',
+    //             html: '<span class="glyphicon glyphicon-pencil"></span> &nbsp EDIT',
+    //             action: 'edit'
+    //         }
+    //     },
+    //     columns: {
+    //         identifier: [0, 'id'],
+    //         editable: [[1, 'First Name'], [2, 'Last Name'], [3, 'Username']]
+    //     }
+    // });
+
+
+</script>
+
+
+
+</form>
+{% endblock %}
+

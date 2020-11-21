@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InClouds (c)
+{% endblock %}
+{% block head %}
+
+<ul class="navbar-nav ml-auto">
+    <a class="p-2 text-dark">{{ user.name }} {{ user.surname }} [{{ user.company }}]</a>
+    <a class="btn btn-warning" href="/logout">Выйти</a>
+</ul>
+
+
+
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="page-header page-header-with-icon mg-t" style="text-align:center;">
+<form class="form-horizontal" method="POST" action="javascript:create_chart();">
+    ОТ <input type='text' id='timepicker-start' style="width: 140px;" onchange=""/>
+    <!--<div id='timepicker-start' class="datepicker-here" data-timepicker="true" data-time-format='hh:ii aa'></div>-->
+    ДО <input type='text' id='timepicker-end' style="width: 140px;"/>
+    <input type="submit" class="btn btn-outline-success" title="Перестроить график" value="Перестроить">
+    <a class="btn btn-outline-success" href="{{ url_for('main') }}" title="Вернуться к выбору списка метрик">&#8249;</a>
+</form>
+</div>
+</div>
+<div id="myDiv"></div>
+
+
+<footer>
+    <!-- D3.js -->
+    <script src="{{ url_for('static', filename='d3-6.2/js/d3.min.js') }}"></script>
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='jquery-2.1.4/js/jquery-2.1.4.min.js') }}"></script>
+    <!-- Plotly.js -->
+    <script src="{{ url_for('static', filename='plotly-1.52.3/js/plotly-basic.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='moment-2.29.1/js/moment.js') }}"></script>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='air-datepicker-2.2.3/css/datepicker.min.css') }}">
+    <script src="{{ url_for('static', filename='air-datepicker-2.2.3/js/datepicker.min.js') }}"></script>
+
+    <script type="text/javascript">
+
+        $.fn.datepicker.language['ru'] =  {
+            days: ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'],
+            daysShort: ['Вос','Пон','Вто','Сре','Чет','Пят','Суб'],
+            daysMin: ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'],
+            months: ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],
+            monthsShort: ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'],
+            today: 'Сегодня',
+            clear: 'Очистить',
+            dateFormat: 'dd.mm.yyyy',
+            timeFormat: 'hh:ii',
+            firstDay: 1
+        };
+
+
+        //         var myJson = '{{myJson | safe}}';
+        //
+        //         console.log(myJson)
+        //
+        //         var figure = JSON.parse(myJson);
+        //
+        //         Plotly.newPlot('graph-div', figure.data, figure.layout);
+        //
+        //         result={
+        //             "result": [
+        //                 {
+        //                     "date": "2020-10-17 10:00:01.061833",
+        //                     "id": 4065,
+        //                     "id_scope_dir": 1,
+        //                     "value": 0.006
+        //                 },
+        //                 {
+        //                     "date": "2020-10-17 10:00:31.167930",
+        //                     "id": 4067,
+        //                     "id_scope_dir": 1,
+        //                     "value": 0.006
+        //                 },
+        //                 {
+        //                     "date": "2020-10-17 10:01:01.208694",
+        //                     "id": 4069,
+        //                     "id_scope_dir": 1,
+        //                     "value": 0.005
+        //                 },
+        // ]}
+
+
+
+        // async function load() {
+        //     let url = 'http://localhost:8228/scope/store_by_datetime?id_scope_dir=1&datetime_start=2020-10-17%2010:00&datetime_end=2020-10-17%2011:00';
+        //     let obj = await (await fetch(url)).json();
+        //     console.log(obj);
+        // }
+        //
+        // load();
+
+        // async function fn () {
+        //     let response = await fetch(url);
+        //     response = await response.json();;
+        //     console.log(response)
+        // }
+        //
+        // fn();
+        var id_orders = '{{id_orders | safe}}';
+        var id_scope_describe = '{{id_scope_describe | safe}}';
+        var datetime_start = '{{datetime_start | safe}}';
+        var datetime_end = '{{datetime_end | safe}}';
+        var msk_scope = '{{msk_scope | safe}}';
+        console.log("backend - id_orders: "+id_orders+" datetime_start: "+datetime_start+" datetime_end: "+datetime_end+" msk_scope: "+msk_scope);
+
+        // console.log(document.URL);
+        // console.log(location.href);
+        // console.log(window.location);
+        // console.log(window.location.origin+window.location.pathname);
+        const datetime_format = "YYYY-MM-DD HH:mm"
+        // var date1 = new Date(datetime_start);
+
+
+
+        console.log(datetime_start);
+        console.log(datetime_end);
+        datetime_start = moment(datetime_start).format(datetime_format);
+        datetime_end = moment(datetime_end).format(datetime_format);
+
+
+    </script>
+
+    <style>
+        .ui-datepicker {
+            height: 500px ;
+            padding: 0.2em 0.2em 0;
+            width: 150px;
+        }
+    </style>
+
+
+    <script>
+        // Зададим стартовую дату
+        var start = new Date(),
+            prevDay,
+            startHours = 0;
+
+        // 09:00
+        start.setHours(0);
+        start.setMinutes(0);
+
+        $("div.ui-datepicker").css( { "font-size": "12px" } );
+        // Если сегодня суббота или воскресенье - 10:00
+        if ([6,0].indexOf(start.getDay()) != -1) {
+            start.setHours(10);
+            startHours = 10
+        }
+        $('#timepicker-start').datepicker({
+            language: 'ru',
+            timepicker: true,
+            startDate: start,
+            minHours: startHours,
+            maxHours: 23,
+
+            // onSelect: function(fd, d, picker) {
+            //     // Ничего не делаем если выделение было снято
+            //     if (!d) return;
+            //
+            //     var day = d.getDay();
+            //
+            //     // Обновляем состояние календаря только если была изменена дата
+            //     if (prevDay != undefined && prevDay == day) return;
+            //     prevDay = day;
+            //
+            //     // Если выбранный день суббота или воскресенье, то устанавливаем
+            //     // часы для выходных, в противном случае восстанавливаем начальные значения
+            //     if (day == 6 || day == 0) {
+            //         picker.update({
+            //             minHours: 10,
+            //             maxHours: 16
+            //         })
+            //     } else {
+            //         picker.update({
+            //             minHours: 9,
+            //             maxHours: 18
+            //         })
+            //     }
+            // }
+        })
+
+        // const stringToDate = function(dateString) {
+        //     const [yyyy, mm, dd] = dateString.split("-");
+        //     return new Date(`${yyyy}-${mm}-${dd}`);
+        // };
+
+
+
+        // var date = new Date('2016-02-27 20:24:39');
+
+        // var date = new Date('2016-02-27 20:24:39');
+        // dateFormat(date, "dS mmm, h:MMTT");
+
+        // var date = moment("2014-02-27T10:00:00").format('YYYY-MM-DD');
+        //
+        // var date_start=moment(datetime_start).format('YYYY-MM-DD HH:mm');
+        //
+        // var datetime__start = moment('2020-10-17 15:30:00').format('MM/DD/YYYY hh:mm');
+        //
+        // console.log(datetime__start);
+
+        // var momentDate = moment('23.11.2009 12:34:56', 'DD.MM.YYYY HH:mm:ss');
+
+        // var momentDate = moment(datetime_start, 'YYYY-MM-DD HH:mm');
+        //
+        // var dateTime = moment(datetime_start).format("YYYY-MM-DD HH:mm");
+        console.log("datetime_start: "+datetime_start);
+
+
+        $('#timepicker-start').data('datepicker').selectDate(new Date(datetime_start))
+
+        var end = new Date(),
+            prevDay,
+            endHours = 23;
+
+        // 09:00
+        end.setHours(0);
+        end.setMinutes(0);
+
+        // Если сегодня суббота или воскресенье - 10:00
+        if ([6,0].indexOf(end.getDay()) != -1) {
+            end.setHours(10);
+            endHours = 10
+        }
+
+        $('#timepicker-end').datepicker({
+            language: 'ru',
+            timepicker: true,
+            // startDate: end,
+            // minHours: endHours,
+            // maxHours: 23,
+            // onSelect: function(fd, d, picker) {
+            //     // Ничего не делаем если выделение было снято
+            //     if (!d) return;
+            //
+            //     var day = d.getDay();
+            //
+            //     // Обновляем состояние календаря только если была изменена дата
+            //     if (prevDay != undefined && prevDay == day) return;
+            //     prevDay = day;
+            //
+            //     // Если выбранный день суббота или воскресенье, то устанавливаем
+            //     // часы для выходных, в противном случае восстанавливаем начальные значения
+            //     if (day == 6 || day == 0) {
+            //         picker.update({
+            //             minHours: 10,
+            //             maxHours: 16
+            //         })
+            //     } else {
+            //         picker.update({
+            //             minHours: 9,
+            //             maxHours: 18
+            //         })
+            //     }
+            // }
+        })
+        console.log("datetime_end: "+datetime_end);
+        $('#timepicker-end').data('datepicker').selectDate(new Date(datetime_end))
+        function datetime_start_change(){
+            console.log(window.location.origin+window.location.pathname+"?datetime_start=" + this.value)
+            url=window.location.origin+window.location.pathname+"?datetime_start=" + this.value;
+            return url
+        }
+        console.log(datetime_start_change())
+        function chart_datetime(){
+            console.log(window.location.origin+window.location.pathname+"?datetime_start=" + this.value)
+            return "/chart_datetime?datetime_start="+datetime_start+"&datetime_end="+datetime_end
+        }
+        // console.log(chart_datetime())
+
+
+        function create_chart(){
+
+            URL_path=window.location.origin+window.location.pathname+window.location.search
+            console.log("URL: "+URL_path)
+            var url = new URL(URL_path);
+            id_scope_describe = url.searchParams.get("id_scope_describe");
+            // datetime_start=moment($('#timepicker-start').data('datepicker').valueOf().selectedDates[0]).format(datetime_format)
+            console.log("datetime_start: "+datetime_start)
+            // datetime_end=moment($('#timepicker-end').data('datepicker').valueOf().selectedDates[0]).format(datetime_format)
+            console.log("datetime_end: "+datetime_end)
+            console.log("/chart_datetime?datetime_start="+datetime_start+"&datetime_end="+datetime_end)
+            // window.history.pushState("datetime_start",datetime_start,"datetime_end",datetime_end,"/chart_datetime?datetime_start="+datetime_start);
+            window.history.replaceState({}, '',"/chart_datetime?id_orders="+id_orders+"&id_scope_describe="+id_scope_describe+"&datetime_start="+datetime_start+"&datetime_end="+datetime_end);
+            // datetime_start=$('#timepicker-start').data('datepicker').valueOf().selectedDates[0]
+            var x = []
+            var y = []
+            // var url ='http://0.0.0.0:8228/scope/store_by_datetime?id_scope_dir=1&datetime_start='+datetime_start+'&datetime_end='+datetime_end
+                var url =msk_scope+'scope/store_by_datetime?id_orders='+id_orders+'&datetime_start='+datetime_start+'&datetime_end='+datetime_end
+            console.log(url);
+            var req = new XMLHttpRequest();
+            req.overrideMimeType("application/json");
+            req.open('GET', url, true);
+            req.onload  = function() {
+                var jsonResponse = JSON.parse(req.responseText);
+                // do something with jsonResponse
+                // console.log(jsonResponse)
+                count_values = jsonResponse['result'].length
+                console.log(count_values)
+                for(var k in jsonResponse['result']) {
+                    // console.log(k, jsonResponse['result'][k]);
+                    x.push(jsonResponse['result'][k]['date'])
+                    y.push(jsonResponse['result'][k]['value'])
+                    // console.log(x)
+                    var data = [
+                        {
+                            x: x,
+                            y: y,
+                            type: 'scatter'
+                        }
+                    ];
+                    var layout = {
+                        locale: 'ru',
+                        title: 'Метрика '+id_scope_describe+' за интервал от '+datetime_start+' до '+datetime_end+' нашел '+count_values+' значений',
+                        xaxis: {
+                            title: 'Время',
+                            showgrid: false,
+                            zeroline: false
+                        },
+                        yaxis: {
+                            title: id_scope_describe,
+                            showline: false
+                        }
+                    };
+                    Plotly.newPlot('myDiv', data, layout);
+                }
+            };
+            req.send(null);
+
+        }
+        create_chart();
+
+
+    </script>
+
+
+</footer>
+
+
+
+</form>
+{% endblock %}

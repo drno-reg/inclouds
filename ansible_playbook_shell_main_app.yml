@@ -1,0 +1,40 @@
+#- hosts: "{{ TARGET_HOSTS }}"
+- hosts: "localhost"
+  tasks:
+    - name: make docker image
+      shell: |
+        cd /home/drno/IdeaProjects/inclouds/main_app
+        docker build -t drnoreg/inclouds_main_app:0.1 ./
+        docker save drnoreg/inclouds_main_app:0.1 > /opt/docker/images/inclouds_main_app.tar
+        scp -P 12345 /opt/docker/images/inclouds_main_app.tar ansible@89.22.182.136:/opt/docker/images
+#        docker push drnoreg/inclouds_main_app:0.1
+- hosts: "89.22.182.136"
+  tasks:
+    - name: check docker image
+      shell: docker ps -a
+      register: dockerps
+      tags: dockerps
+    - debug: msg="{{dockerps.stdout}}"
+    - name: stop and delete docker container
+      shell: |
+        docker stop inclouds_main_app
+        docker rm inclouds_main_app
+        docker rmi drnoreg/inclouds_main_app:0.1
+        docker load -i /opt/docker/images/inclouds_main_app.tar
+#        docker pull drnoreg/inclouds_main_app:0.1
+    - name: pull and start docker container
+      shell: docker run --net inclouds_network --name=inclouds_main_app -d -p 8118:8118 -v /opt/docker/main_app/files:/main_app/main_app/files -v /opt/docker/main_app/configs:/main_app/main_app/configs drnoreg/inclouds_main_app:0.1
+    - name: check docker image
+      shell: docker ps -a
+      register: dockerps
+      tags: dockerps
+    - debug: msg="{{dockerps.stdout}}"
+
+#- host: "localhost"
+#  tasks:
+#    - name: check URL
+#      shell: Test is OK
+#      when: curl https://inclouds.bizml.ru | grep "<td>/main</td>" == "<td>/main</td>"
+#      stat: curl https://inclouds.bizml.ru | grep "<td>/main</td>"
+#      register: st
+#    - include: "if st.stat.exists 'echo '"
