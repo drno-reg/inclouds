@@ -10,6 +10,9 @@ from werkzeug.security import check_password_hash, generate_password_hash
 # импорт моделей
 from main_app.authorization.models import Users, db
 
+from main_app.authorization import app_configs
+
+app_configs=app_configs.load_configs()
 
 from main_app.views import main_app, logging
 
@@ -27,7 +30,7 @@ def login_page():
 
         if user and check_password_hash(user.password, password):
             login_user(user)
-
+            print(app_configs)
             # next_page = request.args.get('next')
             #
             # return redirect(next_page)
@@ -45,13 +48,27 @@ def login_page():
             # metrics = ["ping - inclouds.bizml.ru","http_get - https://inclouds.bizml.ru"]
             #
             # return render_template('main.html', user=Users.query.filter_by(login=login).first(), metrics=metrics, orders=result)
-            result=db.session.execute('select o.id, sd.name, sd.describe, o.parameters, o.executors from orders o inner join scope_dir sd on sd.id=o.id_scope_dir inner join users us on us.id=o.id_users where us.login= :value1',{'value1': login})
+            users=db.session.execute('select * from users sd order by id')
+            users=[dict(row) for row in users]
+            scope_dir=db.session.execute('select * from scope_dir sd order by id')
+            scope_dir=[dict(row) for row in scope_dir]
+            result1=db.session.execute('select * from test')
+            result1=[dict(row) for row in result1]
+            # result=db.session.execute('select o.id, sd.id as id_scope_dir, sd.name, sd.describe, o.parameters, o.executors, o.status, sd2.job_frequency, sd2.job_frequency_type  from orders o inner join scope_dir sd on sd.id=o.id_scope_dir inner join users us on us.id=o.id_users inner join scheduler_dir sd2 on o.id=sd2.id_orders where us.login= :value1 order by o.id',{'value1': login})
+            result=db.session.execute("""
+            select o.id, sd.id as id_scope_dir, sd.name, sd.describe, o.parameters, o.executors, o.status, sd2.job_frequency, sd2.job_frequency_type  from orders o 
+                    inner join scope_dir sd on sd.id=o.id_scope_dir 
+                    inner join users us on us.id=o.id_users 
+                    inner join scheduler_dir sd2 on o.id=sd2.id_orders 
+                    where us.login= :login order by o.id
+                    """,{'login': login})
             result=[dict(row) for row in result]
+
             # print("result: ", result)
 
             metrics = ["ping - inclouds.bizml.ru","http_get - https://inclouds.bizml.ru"]
 
-            return render_template('main.html', user=Users.query.filter_by(login=login).first(), metrics=metrics, orders=result)
+            return render_template('main.html', user=Users.query.filter_by(login=login).first(), metrics=metrics, orders=result, test=result1, scope_dir=scope_dir, users=users, msk_scope=app_configs.get('MSK_SCOPE'))
         else:
             flash('Ошибка в логине или пароле')
     else:

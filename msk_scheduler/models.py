@@ -18,7 +18,8 @@ metadata = MetaData()
 # Справочник метрик на scope сервере
 scope_dir = Table(
    'scope_dir', metadata,
-   Column('id', Integer, primary_key=True),
+   # Column('id', Integer, primary_key=True),
+   Column('id', Integer),
    Column('name', String),
    Column('describe', String),
    Column('template', String)
@@ -28,7 +29,8 @@ scope_dir = Table(
 orders = Table(
     'orders', metadata,
     # Column('id', Integer, nullable=False),
-    Column('id', Integer, primary_key=True),
+    # Column('id', Integer, primary_key=True),
+    Column('id', Integer),
     Column('id_users', Integer, nullable=False),
     Column('id_scope_dir', Integer, ForeignKey("scope_dir.id"), nullable=False),
     Column('parameters', String),
@@ -38,17 +40,39 @@ orders = Table(
 
 scheduler_dir = Table (
   'scheduler_dir', metadata,
-   Column('id', Integer, primary_key=True),
+   # Column('id', Integer, primary_key=True),
+   Column('id', Integer),
    Column('id_orders', Integer, ForeignKey("orders.id"), nullable=False),
    Column('job_frequency', String),
    Column('job_frequency_type', String),
    Column('job_script', String)
 )
 
+thresholds = Table (
+    'thresholds', metadata,
+    # Column('id', Integer, primary_key=True),
+    Column('id', Integer),
+    Column('id_orders', Integer, ForeignKey("orders.id"), nullable=False),
+    Column('minor_1', Integer),
+    Column('minor_2', Integer),
+    Column('minor_count', Integer),
+    Column('minor_conditions', String),
+    Column('warning_1', Integer),
+    Column('warning_2', Integer),
+    Column('warning_count', Integer),
+    Column('warning_conditions', String),
+    Column('critical_1', Integer),
+    Column('critical_2', Integer),
+    Column('critical_count', Integer),
+    Column('critical_conditions', String),
+    Column('telegram_token', String),
+    Column('telegram_chatid', String),
+)
+
 scheduler_log = Table (
    'scheduler_log', metadata,
    Column('id', Integer, primary_key=True),
-   Column('id_scheduler_dir', Integer, ForeignKey("scheduler_dir.id"), nullable=False),
+   Column('id_orders', Integer, ForeignKey("orders.id"), nullable=False),
    Column('job_status', String),
    Column('job_start', DateTime, default=datetime.utcnow),
    Column('job_end', DateTime, default=datetime.utcnow),

@@ -24,11 +24,15 @@ InClouds (c)
     <a class="btn btn-outline-success" href="{{ url_for('main') }}" title="Вернуться к выбору списка метрик">&#8249;</a>
 </form>
 </div>
-</div>
-<div id="myDiv"></div>
 
+</div>
+<div id="Order_Chart"></div>
+<div id="Waiting"></div>
 
 <footer>
+    <!-- jQuery -->
+    <script src="{{ url_for('static', filename='jquery.dataTables/jquery-3.5.1.js') }}"></script>
+    <script src="{{ url_for('static', filename='bootstrap-4.5.3-dist/js/bootstrap.js') }}"></script>
     <!-- D3.js -->
     <script src="{{ url_for('static', filename='d3-6.2/js/d3.min.js') }}"></script>
     <!-- jQuery -->
@@ -149,10 +153,10 @@ InClouds (c)
 
         $("div.ui-datepicker").css( { "font-size": "12px" } );
         // Если сегодня суббота или воскресенье - 10:00
-        if ([6,0].indexOf(start.getDay()) != -1) {
-            start.setHours(10);
-            startHours = 10
-        }
+        // if ([6,0].indexOf(start.getDay()) != -1) {
+        //     start.setHours(10);
+        //     startHours = 10
+        // }
         $('#timepicker-start').datepicker({
             language: 'ru',
             timepicker: true,
@@ -225,10 +229,10 @@ InClouds (c)
         end.setMinutes(0);
 
         // Если сегодня суббота или воскресенье - 10:00
-        if ([6,0].indexOf(end.getDay()) != -1) {
-            end.setHours(10);
-            endHours = 10
-        }
+        // if ([6,0].indexOf(end.getDay()) != -1) {
+        //     end.setHours(10);
+        //     endHours = 10
+        // }
 
         $('#timepicker-end').datepicker({
             language: 'ru',
@@ -279,22 +283,27 @@ InClouds (c)
         function create_chart(){
 
             URL_path=window.location.origin+window.location.pathname+window.location.search
-            console.log("URL: "+URL_path)
+            console.log("Нажали кнопку перестроить график URL: "+URL_path)
             var url = new URL(URL_path);
             id_scope_describe = url.searchParams.get("id_scope_describe");
-            // datetime_start=moment($('#timepicker-start').data('datepicker').valueOf().selectedDates[0]).format(datetime_format)
-            console.log("datetime_start: "+datetime_start)
-            // datetime_end=moment($('#timepicker-end').data('datepicker').valueOf().selectedDates[0]).format(datetime_format)
-            console.log("datetime_end: "+datetime_end)
+            datetime_start=moment($('#timepicker-start').data('datepicker').valueOf().selectedDates[0]).format(datetime_format)
+            console.log("читаю datetime_start: "+datetime_start)
+            datetime_end=moment($('#timepicker-end').data('datepicker').valueOf().selectedDates[0]).format(datetime_format)
+            console.log("читаю datetime_end: "+datetime_end)
             console.log("/chart_datetime?datetime_start="+datetime_start+"&datetime_end="+datetime_end)
             // window.history.pushState("datetime_start",datetime_start,"datetime_end",datetime_end,"/chart_datetime?datetime_start="+datetime_start);
             window.history.replaceState({}, '',"/chart_datetime?id_orders="+id_orders+"&id_scope_describe="+id_scope_describe+"&datetime_start="+datetime_start+"&datetime_end="+datetime_end);
             // datetime_start=$('#timepicker-start').data('datepicker').valueOf().selectedDates[0]
+            // console.log("читаю datetime_start: "+datetime_start)
             var x = []
             var y = []
             // var url ='http://0.0.0.0:8228/scope/store_by_datetime?id_scope_dir=1&datetime_start='+datetime_start+'&datetime_end='+datetime_end
                 var url =msk_scope+'scope/store_by_datetime?id_orders='+id_orders+'&datetime_start='+datetime_start+'&datetime_end='+datetime_end
             console.log(url);
+            document.getElementById('Waiting').innerText='Скачиваю данные для построения графика по заказу '+id_scope_describe+' за интервал от '+datetime_start+' до '+datetime_end;
+            document.getElementById('Waiting').visible = true;
+            document.getElementById('Waiting').style = "text-align:center;";
+            document.getElementById('Order_Chart').innerText ="";
             var req = new XMLHttpRequest();
             req.overrideMimeType("application/json");
             req.open('GET', url, true);
@@ -329,21 +338,356 @@ InClouds (c)
                             showline: false
                         }
                     };
-                    Plotly.newPlot('myDiv', data, layout);
+                    Plotly.newPlot('Order_Chart', data, layout);
                 }
+                document.getElementById('Waiting').innerText ="";
+                document.getElementById('Waiting').visible = false;
             };
             req.send(null);
-
         }
         create_chart();
-
 
     </script>
 
 
+    <div id="accordion_thresholds">
+        <div class="card">
+            <div class="card-header" id="thresholds">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapse_thresholds" aria-expanded="true" aria-controls="collapse_thresholds"><div id="metrics"></button>
+<!--                    <a class="btn btn-warning edit orders"><i class="fas fa-edit"></i></a>-->
+                    <button class="btn btn-warning add thresholds" hidden="true"><i class="fas fa-plus-square"></i></button>
+                    <button class="btn btn-warning save thresholds" hidden="true"><i class="far fa-save"></i></button>
+                </h5>
+            </div>
+
+            <div id="collapse_thresholds" class="collapse" aria-labelledby="headingOne" data-parent="#accordion_thresholds">
+<!--                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">    -->
+                <div class="card-body">
+<!--                    <table class="table table-striped table-bordered" id="table_orders_thresholds">-->
+                    <div id="table_orders_thresholds"/>
+
+
+<!--                        <table id="table_orders_thresholds">-->
+<!--                        <thead>-->
+<!--                        <tr>-->
+<!--                            <th>Critical порог 1</th>-->
+<!--                            <th>Critical порог 2</th>-->
+<!--                            <th>Critical повтор</th>-->
+<!--                            <th>Critical условия</th>-->
+<!--                            <th>Telegram token</th>-->
+<!--                            <th>Telegram chatID</th>-->
+<!--                        </tr>-->
+<!--                        </thead>-->
+<!--                        <tbody>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div id="accordion_sсheduler_log">
+        <div class="card">
+
+    <div class="card-header" id="sсheduler_log">
+        <h5 class="mb-0">
+            <!--                    <a class="btn btn-warning edit orders"><i class="fas fa-edit"></i></a>-->
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapse_sсheduler_log" aria-expanded="true" aria-controls="collapse_sсheduler_log"><i class="fas fa-warehouse"></i></button>
+        </h5>
+    </div>
+
+    <div id="collapse_sсheduler_log" class="collapse" aria-labelledby="headingOne" data-parent="#accordion_sсheduler_log">
+        <div class="card-body">
+            <table id="table_sсheduler_log" border="green">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>id_order</th>
+                    <th>job_status</th>
+                    <th>job_start</th>
+                    <th>job_end</th>
+                    <th>job_log</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+        </div>
+
+    </div>
+
 </footer>
 
+<script>
 
+
+
+
+
+    document.getElementById('metrics').innerHTML="Пороги для "+id_scope_describe;
+    const threshold = [{'critical_1':'Critical порог 1','critical_2':'Critical порог 2','critical_count':'Critical повтор','critical_conditions':'Critical условия','telegram_token':'Telegram token', 'telegram_chatid':'Telegram chatID'}]
+    const scheduler_log = ['id','id_orders','job_status','job_start','job_end', 'job_log']
+    // http_request_get('/orders/thresholds?id_orders='+id_orders,'GET',null, "table_orders_thresholds", 7,threshold)
+    http_request_get_js(msk_scope+'/orders/scheduler_log/'+id_orders,'GET',null, "table_sсheduler_log")
+    async function http_request_get_new(url) {
+        try {
+            let response = await fetch(url);
+            let jsonResponse = await response.json();
+            console.log(jsonResponse);
+            count_values = jsonResponse['result'].length
+            let table = document.createElement("table");
+            let resolution = window.screen.availWidth/window.screen.availHeight
+            console.log("coount: "+count_values+", resolution: "+resolution);
+            if (count_values>0) {
+                col = [];
+                for (let i = 0; i < threshold.length; i++) {
+                    for (let key in threshold[i]) {
+                        if (col.indexOf(key) === -1) {
+                            col.push(key);
+                        }
+                    }
+                }
+                // col = threshold
+                console.log(col)
+                if (resolution>1) {
+                    console.log("пороги уже заданы и ориентация ПК: "+resolution);
+                    tr = table.insertRow(-1);                   // TABLE ROW.
+                    for (let i = 0; i < col.length; i++) {
+                        let th = document.createElement("th");      // TABLE HEADER.
+                        th.innerHTML = col[i];
+                        tr.appendChild(th);
+                    }
+                    for (let i = 0; i < jsonResponse['result'].length; i++) {
+
+                        tr = table.insertRow(-1);
+
+                        for (let j = 0; j < col.length; j++) {
+                            let tabCell = tr.insertCell(-1);
+                            // tabCell.innerHTML = jsonResponse['result'][i][col[j]];
+                            tabCell.innerHTML = "<input class=\"input edit thresholds "+col[j]+"\" type='text' value='" + jsonResponse['result'][i][col[j]] + "'/>";
+                            // this["cell"+i].innerHTML="<input class=\"input edit thresholds "+context[i-1]+"\" type='text' value='" + jsonResponse['result'][k][context[i-1]] + "'/>";
+
+                        }
+                    }
+                } else {
+                    console.log("пороги уже заданы и ориентация мобилы: "+resolution);
+
+                    for (let i = 0; i < jsonResponse['result'].length; i++) {
+
+
+                        for (let j = 0; j < col.length; j++) {
+                            console.log(col[j]+" : "+jsonResponse['result'][i][col[j]])
+                            tr = table.insertRow(-1);
+                            let th = document.createElement("th");      // TABLE HEADER.
+                            th.innerHTML = col[j];
+                            let tabCell = tr.insertCell(-1);
+                            tabCell.innerHTML = "<input class=\"input edit thresholds "+col[j]+"\" type='text' value='" + jsonResponse['result'][i][col[j]] + "'/>";
+                            tr.appendChild(th);
+                            tr.appendChild(tabCell);
+                            // tabCell.innerHTML = mountains[i][col[j]];
+
+
+                        }
+
+                    }
+
+                }
+            } else {
+            }
+            divContainer = document.getElementById("table_orders_thresholds");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+        } catch(err) {
+            // перехватит любую ошибку в блоке try: и в fetch, и в response.json
+            alert(err);
+        }
+    }
+    http_request_get_new('/orders/thresholds?id_orders='+id_orders);
+
+    // формируем закладку о пороговых значениях
+    function http_request_get(url,http_type,json_context,table_name, table_size, context) {
+        var req = new XMLHttpRequest();
+        req.overrideMimeType('application/json; charset=utf-8');
+        req.open(http_type, url, true);
+        // req.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        req.onload  = function() {
+            if(req.readyState == 4 && req.status == 200) {
+                var jsonResponse = JSON.parse(req.responseText);
+                // do something with jsonResponse
+                console.log(jsonResponse)
+                if (http_type=="GET") {
+                    count_values = jsonResponse['result'].length
+                    console.log("Строк: "+count_values)
+                    console.log(jsonResponse)
+                    var table = document.getElementById(table_name);
+                    var totalRowCount = table.rows.length;
+                    var row = table.insertRow(totalRowCount);
+                    console.log("totalRowCount: "+totalRowCount+", row: "+row)
+                    for (var i=1; i<= table_size; ++i)
+                    {
+                        // eval ('var cell'+i+'= row.insertCell('+(i-1)+');');
+                        this["cell"+i] = row.insertCell((i-1));
+                    }
+                    console.log(this.cell1);
+                    if (count_values>0) {
+                        for (var k in jsonResponse['result']) {
+                            console.log(jsonResponse['result'][k][context[0]]);
+                            for (var i=1; i<table_size; ++i){
+                                this["cell"+i].innerHTML="<input class=\"input edit thresholds "+context[i-1]+"\" type='text' value='" + jsonResponse['result'][k][context[i-1]] + "'/>";
+                                console.log(this["cell"+i].innerHTML);
+                            }
+                            $(".btn.btn-warning.save.thresholds").removeAttr("hidden")
+                        }
+                    } else {
+                        for (var i=1; i<table_size; ++i){
+                            this["cell"+i].innerHTML="<input class=\"input edit thresholds "+context[i-1]+"\" type='text' value='заполните'/>";
+                            // console.log(context[i-1]);
+                        }
+                        $(".btn.btn-warning.add.thresholds").removeAttr("hidden")
+                    }
+                }
+            }
+        };
+        req.send(JSON.stringify(json_context));
+    }
+    // формируем закладку о логах
+    function http_request_get_js(url,http_type,json_context,table_name){
+        var req = new XMLHttpRequest();
+        req.overrideMimeType('application/json; charset=utf-8');
+        req.open(http_type, url, true);
+        // req.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        req.onload  = function() {
+            if(req.readyState == 4 && req.status == 200) {
+                var jsonResponse = JSON.parse(req.responseText);
+                console.log(jsonResponse['result'])
+                var col = [];
+                for (var i = 0; i < jsonResponse['result'].length; i++) {
+                    for (var key in jsonResponse['result'][i]) {
+                        if (col.indexOf(key) === -1) {
+                            col.push(key);
+                        }
+                    }
+                }
+                console.log(col)
+                var table = document.createElement("table");
+                var tr = table.insertRow(-1);                   // TABLE ROW.
+
+                for (var i = 0; i < col.length; i++) {
+                    var th = document.createElement("th");      // TABLE HEADER.
+                    th.innerHTML = col[i];
+                    tr.appendChild(th);
+                }
+                for (var i = 0; i < jsonResponse['result'].length; i++) {
+                    tr = table.insertRow(-1);
+                    for (var j = 0; j < col.length; j++) {
+                        var tabCell = tr.insertCell(-1);
+                        tabCell.innerHTML = jsonResponse['result'][i][col[j]];
+                    }
+                }
+                var divContainer = document.getElementById("table_sсheduler_log");
+                divContainer.innerHTML = "";
+                divContainer.appendChild(table);
+            };
+        }
+        req.send(JSON.stringify(null));
+    }
+
+    function http_request_post(url,json_context) {
+        var xhr = new XMLHttpRequest();   // new HttpRequest instance
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                // alert(xhr.responseText);
+                var jsonResponse = JSON.parse(xhr.responseText);
+                console.log(jsonResponse);
+                if (url.indexOf('update')>0 || url.indexOf('status')>0) {
+                    console.log("url " + url + " содержит update " + url.indexOf('update') + " или status" + url.indexOf('status'))
+                }  if (url.indexOf('insert')>0) {
+                    console.log("thresholds: "+jsonResponse['result'][0]['thresholds'])
+                    json_context['thresholds']=jsonResponse['result'][0]['thresholds']
+                    console.log(json_context)
+                    var xhr_insert = new XMLHttpRequest();
+                    xhr_insert.open("POST", msk_scope+url, true)
+                    xhr_insert.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                    xhr_insert.onreadystatechange = function() {
+                        if(xhr_insert.readyState == 4 && xhr_insert.status == 200) {
+                            var jsonResponse = JSON.parse(xhr_insert.responseText);
+                            console.log(jsonResponse);
+                        }
+                    };
+                    xhr_insert.send(JSON.stringify(json_context));
+                }
+                // reload(url);
+                location.reload();
+            }
+        };
+        xhr.send(JSON.stringify(json_context));
+    }
+    // обновляем содержимое таблицы заказов
+    function reload(url){
+        $( "#accordion_thresholds" ).load(window.location.href + " #accordion_thresholds" );
+        // var container = document.getElementById("table_orders");
+        // var content = container.innerHTML;
+        // container.innerHTML= content;
+        //this line is to watch the result in console , you can remove it later
+        console.log("Refreshed: "+url);
+    }
+    // редактирование пороговых значений
+    $('body').on('click', '.btn.btn-warning.save.thresholds', function(e) {
+        e.preventDefault();
+        var critical_1 = $(".input.edit.thresholds.critical_1").val()
+        var critical_2 = $(".input.edit.thresholds.critical_2").val()
+        var critical_count = $(".input.edit.thresholds.critical_count").val()
+        var critical_conditions = $(".input.edit.thresholds.critical_conditions").val()
+        var telegram_token = $(".input.edit.thresholds.telegram_token").val()
+        var telegram_chatid = $(".input.edit.thresholds.telegram_chatid").val()
+        var json_context = {"id_orders":id_orders,"critical_1": critical_1,"critical_2": critical_2,"critical_count": critical_count,"critical_conditions": critical_conditions,"telegram_token": telegram_token,"telegram_chatid": telegram_chatid}
+        console.log(json_context);
+        var url = '/orders/thresholds/update'
+        http_request_post(url,json_context)
+        http_request_post(msk_scope+url, json_context);
+    });
+    // добавление новых пороговых значений
+    $('body').on('click', '.btn.btn-warning.add.thresholds', function(e) {
+        e.preventDefault();
+        var critical_1 = $(".input.edit.thresholds.critical_1").val()
+        var critical_2 = $(".input.edit.thresholds.critical_2").val()
+        var critical_count = $(".input.edit.thresholds.critical_count").val()
+        var critical_conditions = $(".input.edit.thresholds.critical_conditions").val()
+        var telegram_token = $(".input.edit.thresholds.telegram_token").val()
+        var telegram_chatid = $(".input.edit.thresholds.telegram_chatid").val()
+        var json_context = {"id_orders":id_orders,"critical_1": critical_1,"critical_2": critical_2,"critical_count": critical_count,"critical_conditions": critical_conditions,"telegram_token": telegram_token,"telegram_chatid": telegram_chatid}
+        console.log(json_context);
+        var url = '/orders/thresholds/insert'
+        // проверяем что заполнил ли пользователь поля правильно
+        var thresholds_checks=0;
+        for(k in json_context) {
+            if (json_context[k]=="заполните"){
+                console.log(k+": "+json_context[k]);
+                thresholds_checks=thresholds_checks+1;
+                $(this).closest('tr').children().children(".input.edit.orders.parameters")
+                $(".input.edit.thresholds."+k).attr("style","background-color: #ff07de;")
+            }
+        }
+        if (thresholds_checks==0){
+            http_request_post(url,json_context)
+            // http_request_post(msk_scope+url, json_context);
+        } else {
+            console.log("Заполните поля!")
+        }
+    });
+
+</script>
 
 </form>
 {% endblock %}

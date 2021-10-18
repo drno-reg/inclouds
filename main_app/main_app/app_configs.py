@@ -6,16 +6,16 @@ def load_file_by_lines(PATH):
     :param PATH:
     :return:
     """
-    result = []
+    # result = []
     result_map = {}
-    # print(dir(result_map))
+    #print(dir(result_map))
     with open(PATH) as fp:
         line = fp.readline()
         cnt = 1
         while line:
             # print("Line {}: {}".format(cnt, line.strip()))
             line="{}".format(line.strip())
-            result.append(line)
+            # result.append(line)
             # print(line.find('='))
             key=line[:line.find('=')]
             value=line[line.find('=')+1:]
@@ -23,7 +23,7 @@ def load_file_by_lines(PATH):
             result_map[key]=value
             line = fp.readline()
             cnt += 1
-    # print(result_map)
+    print(result_map)
     return result_map
 
 def load_configs():
@@ -33,18 +33,16 @@ def load_configs():
     """
     result = []
     try:
-        PATH = 'main_app/configs/db.conf'
+        PATH = 'configs/db.conf'
         if os.path.isfile(PATH) and os.access(PATH, os.R_OK):
             print("Работаем на хосте тестовой зоны")
             result=load_file_by_lines(PATH)
         else:
-            PATH = '/opt/docker/main_app/configs/db.conf'
-            print("Работаем на хосте разработки")
+            PATH = '/Users/nabaran2/docker/main_app/configs/db.conf'
+            print("Работаем на хосте разработки fuck")
             result=load_file_by_lines(PATH)
-    except:
-        print("печалька! ни по одному из путей файл db.conf не найден...")
+    except Exception as e:
+        print(e.with_traceback(), "печалька! ни по одному из путей файл db.conf не найден...")
     # print(result)
     # print(result.get('MSK_SCOPE'))
     return result
-
-

@@ -27,38 +27,50 @@ def main_job():
     Session = sessionmaker(bind=engine)
     session = Session()
     # result_scheduler_dir = session.query(scheduler_dir).all()
-    result_scheduler_dir=session.execute('select sd.*, sd2.*, o.* from scheduler_dir sd inner join orders o on o.id = sd.id_orders inner join scope_dir sd2 on sd2.id =o.id_scope_dir ').fetchall()
+    result_scheduler_dir=session.execute("""
+        select sd.*, sd2.*, o.parameters, o.status from scheduler_dir sd 
+        inner join orders o on o.id = sd.id_orders 
+        inner join scope_dir sd2 on sd2.id =o.id_scope_dir 
+        where o.status ='start'
+    """).fetchall()
     print(result_scheduler_dir)
 
     for row in result_scheduler_dir:
         # session.execute(scheduler_log.insert(), result_row)
         # выбираем по id самую последнюю запись
-        result_scheduler_log=session.execute('select * from scheduler_log s1 where s1.id in (select max(id) from scheduler_log s2 where s2.id_scheduler_dir= :value1 order by s2.job_start desc limit 1)',{'value1': row.id}).fetchall()
-        # result_scheduler_log=session.execute('select * from scheduler_log s1 where s1.id in (select max(id) from scheduler_log s2 where s2.id_scheduler_dir= :value1 and s2.job_status<> :value2 and s2.job_log= :value3 order by s2.job_start desc limit 1)',{'value1': row.id, 'value2': 'wait', 'value3': None}).fetchall()
+        print(row)
+        result_scheduler_log=session.execute("""
+            select * from scheduler_log s1 
+            where s1.id in (select max(id) from scheduler_log s2 
+            where s2.id_orders= :value1 and s1.job_status NOT IN ('minor','warning','critical') 
+            order by s2.job_start desc limit 1)
+        """,{'value1': row.id_orders}).fetchall()
+        # result_scheduler_log=session.execute('select * from scheduler_log s1 where s1.id in (select max(id) from scheduler_log s2 where s2.id_orders= :value1 and s2.job_status<> :value2 and s2.job_log= :value3 order by s2.job_start desc limit 1)',{'value1': row.id_orders, 'value2': 'wait', 'value3': None}).fetchall()
         print(result_scheduler_log)
         # print(dir(result_scheduler_log))
         # для первого запуска, если база пустая
         if (len(result_scheduler_log)==0):
-            print(row.job_frequency)
+            print("Start new, id_orders=",row.id_orders," with job_frequency=",row.job_frequency)
             print(datetime.datetime.now().time())
             job_start=datetime.datetime.now()+datetime.timedelta(seconds=int(row.job_frequency))
             print(job_start)
             date_time_obj = datetime.datetime.strptime(str(job_start), '%Y-%m-%d %H:%M:%S.%f')
             print(date_time_obj)
-            result_row=[{'id_scheduler_dir':row.id,'job_status':'wait','job_start':date_time_obj,'job_end':datetime.datetime.now()}]
+            result_row=[{'id_orders':row.id_orders,'job_status':'wait','job_start':date_time_obj,'job_end':datetime.datetime.now()}]
             print(result_row)
             session.execute(scheduler_log.insert(), result_row)
             session.commit()
         for row1 in result_scheduler_log:
             row_as_dict = dict(row1)
             if (row_as_dict.get('job_status')=='done'):
+                print("Continue, id_orders=",row.id_orders," with job_frequency=",row.job_frequency)
                 print(row.job_frequency)
                 print(datetime.datetime.now().time())
                 job_start=datetime.datetime.now()+datetime.timedelta(seconds=int(row.job_frequency))
                 print(job_start)
                 date_time_obj = datetime.datetime.strptime(str(job_start), '%Y-%m-%d %H:%M:%S.%f')
                 print(date_time_obj)
-                result_row=[{'id_scheduler_dir':row.id,'job_status':'wait','job_start':date_time_obj,'job_end':datetime.datetime.now()}]
+                result_row=[{'id_orders':row.id_orders,'job_status':'wait','job_start':date_time_obj,'job_end':datetime.datetime.now()}]
                 print(result_row)
                 session.execute(scheduler_log.insert(), result_row)
                 session.commit()
@@ -82,7 +94,8 @@ def main_job():
                     # select sd.*, sd2.*, o.* from scheduler_dir sd inner join orders o on o.id = sd.id_orders inner join scope_dir sd2 on sd2.id =o.id_scope_dir
                     # итого scheduler_dir.job_script | scope_dir.template | orders.id_orders | orders.parameters | id_scheduler_dir.id
                     # пример python3 templates/template_http_get.py inclouds.bizml.ru 5 10
-                    script=row.job_script+row.template+" "+str(row.parameters)+" "+str(row.id_orders)+" "+str(row.id)+" "+str(row_as_dict.get('id'))
+                    # теперь привязка только к id_orders
+                    script=row.job_script+row.template+" "+str(row.parameters)+" "+str(row.id_orders)+" "+str(row_as_dict.get('id'))
                     print('Start run job ', row_as_dict.get('id'), ' script: ', script)
                     def start_job(job_script):
                         result = str(get_simple_cmd_output(job_script))

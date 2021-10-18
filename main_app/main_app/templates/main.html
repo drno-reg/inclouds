@@ -19,20 +19,67 @@ InClouds (c)
     }
 </style>
 
+<style>
+    * {box-sizing: border-box}
+
+    /* Set height of body and the document to 100% */
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial;
+    }
+
+    /* Style tab links */
+    .tablink {
+        background-color: ghostwhite;
+        color: black;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 25%;
+    }
+    .input.edit{
+        box-shadow: none;
+        border: none;
+        border-width: 0;
+        box-shadow: none;
+    }
+    .tablink:hover {
+        background-color: #cddbcd;
+    }
+
+    /* Style the tab content (and add height:100% for full page content) */
+    .tabcontent {
+        color: black;
+        display: none;
+        padding: 100px 20px;
+        height: 100%;
+    }
+
+    #Orders {background-color: white;}
+    #News {background-color: white;}
+    #Contact {background-color: white;}
+    #About {background-color: white;}
+</style>
+
+
 <!-- jQuery -->
 <script src="{{ url_for('static', filename='jquery.dataTables/jquery-3.5.1.js') }}"></script>
-
-<!--<script src="{{ url_for('static', filename='bootstrap-4.5.2-dist/js/bootstrap.js') }}"></script>-->
+<script src="{{ url_for('static', filename='bootstrap-4.5.3-dist/js/bootstrap.js') }}"></script>
 
 <link rel="stylesheet" href="{{ url_for('static', filename='jquery.dataTables/jquery.dataTables.min.css') }}">
-
-
 <script src="{{ url_for('static', filename='jquery.dataTables/jquery.dataTables.min.js') }}"></script>
-
+<script src="{{ url_for('static', filename='moment-2.29.1/js/moment.js') }}"></script>
 
 <!--<script src="{{ url_for('static', filename='jquery-tabledit-1.2.3/jquery.tabledit.js') }}"></script>-->
 
 
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
 
 
 
@@ -52,140 +99,181 @@ InClouds (c)
 
 <div class="container">
     <div class="page-header page-header-with-icon mg-t" style="text-align:left;">
-<h3>Заказаны:</h3><br>
-
-<!--        <button type="submit">Submit form</button>-->
-<!--        <table id="example" class="display" style="width:100%">-->
-<!--            <thead>-->
-<!--            <tr>-->
-<!--                <th>Name</th>-->
-<!--                <th>Age</th>-->
-<!--                <th>Position</th>-->
-<!--                <th>Office</th>-->
-<!--            </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--            <tr>-->
-<!--                <td>Tiger Nixon</td>-->
-<!--                <td><input type="text" id="row-1-age" name="row-1-age" value="61"></td>-->
-<!--                <td><input type="text" id="row-1-position" name="row-1-position" value="System Architect"></td>-->
-<!--                <td><select size="1" id="row-1-office" name="row-1-office">-->
-<!--                    <option value="Edinburgh" selected="selected">-->
-<!--                        Edinburgh-->
-<!--                    </option>-->
-<!--                    <option value="London">-->
-<!--                        London-->
-<!--                    </option>-->
-<!--                    <option value="New York">-->
-<!--                        New York-->
-<!--                    </option>-->
-<!--                    <option value="San Francisco">-->
-<!--                        San Francisco-->
-<!--                    </option>-->
-<!--                    <option value="Tokyo">-->
-<!--                        Tokyo-->
-<!--                    </option>-->
-<!--                </select></td>-->
-<!--            </tr>-->
-<!--            </tbody>-->
-<!--            <tfoot>-->
-<!--            <tr>-->
-<!--                <th>Name</th>-->
-<!--                <th>Age</th>-->
-<!--                <th>Position</th>-->
-<!--                <th>Office</th>-->
-<!--            </tr>-->
-<!--            </tfoot>-->
-<!--        </table>-->
 
 
-<!--        <div class="container" style="margin-top:150px;">-->
-<!--            <h1>jQuery Tabledit Plugin Demo</h1>-->
-<!--            <table class="table table-striped table-bordered" id="example">-->
-<!--                <caption>-->
-<!--                    Click the table cells to edit.-->
-<!--                </caption>-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th>#</th>-->
-<!--                    <th>First Name</th>-->
-<!--                    <th>Last Name</th>-->
-<!--                    <th>Username</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                <tr>-->
-<!--                    <th scope="row">1</th>-->
-<!--                    <td>Mark</td>-->
-<!--                    <td>Otto</td>-->
-<!--                    <td>@mdo</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th scope="row">2</th>-->
-<!--                    <td>Jacob</td>-->
-<!--                    <td>Thornton</td>-->
-<!--                    <td>@fat</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th scope="row">3</th>-->
-<!--                    <td>Larry</td>-->
-<!--                    <td>the Bird</td>-->
-<!--                    <td>@twitter</td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
-<!--            <table class="table table-striped table-bordered" id="example-2">-->
-<!--                <caption>-->
-<!--                    Click the table cells to edit.-->
-<!--                </caption>-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th>#</th>-->
-<!--                    <th>First</th>-->
-<!--                    <th>Last</th>-->
-<!--                    <th>Nickname</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody>-->
-<!--                <tr>-->
-<!--                    <th scope="row">1</th>-->
-<!--                    <td>Mark</td>-->
-<!--                    <td>Otto</td>-->
-<!--                    <td>@mdo</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th scope="row">2</th>-->
-<!--                    <td>Jacob</td>-->
-<!--                    <td>Thornton</td>-->
-<!--                    <td>@fat</td>-->
-<!--                </tr>-->
-<!--                <tr>-->
-<!--                    <th scope="row">3</th>-->
-<!--                    <td>Larry</td>-->
-<!--                    <td>the Bird</td>-->
-<!--                    <td>@twitter</td>-->
-<!--                </tr>-->
-<!--                </tbody>-->
-<!--            </table>-->
+
 
     <ul class="bigFont">
-    <table class="table table-striped table-bordered" id="orders_table">
-<thead>
-                        <tr>
-                            <th>№</th>
-                            <th>Наименование</th>
-                            <th>Описание</th>
-                            <th>Параметры</th>
-                            <th>Гео</th>
-                        </tr>
-       </thead>
-        <tbody>
-    {% for result_line in orders %}
-    <tr><td>{{loop.index}}</td><td>{{result_line.name}}</td><td>{{result_line.describe}}</td><td>{{result_line.parameters}}</td><td><a href="{{ url_for('chart_datetime_picker') }}?id_orders={{ result_line.id }}&id_scope_describe={{ result_line.name }} - {{result_line.parameters }}">Посмотреть график на {{result_line.executors}}</a></td></tr>
-    {% endfor %}
-        </tbody>
-    </table>
-    </ul>
+
+        <button class="tablink" onclick="openPage('Orders', this, '#ffc107')" id="defaultOpen">Заказы</button>
+<!--        <button class="tablink" onclick="openPage('News', this, '#ffc107')">News</button>-->
+<!--        <button class="tablink" onclick="openPage('Contact', this, 'blue')">Contact</button>-->
+        <button class="tablink" onclick="openPage('Test', this, '#ffc107')" ><i class="fas fa-table"></i></button>
+        <button class="tablink" onclick="openPage('Profile', this, '#ffc107')">Профиль</button>
+
+        <div id="Orders" class="tabcontent">
+<!--            <table class="table table-striped table-bordered" id="orders_table">-->
+                <table id="table_orders">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Наименование</th>
+<!--                    <th>Описание</th>-->
+                    <th>Параметры</th>
+                    <th>Гео</th>
+                    <th>Частота</th>
+                    <th>Тип выполнения</th>
+<!--                    <th><a class="btn btn-warning add orders" onclick="orders_add_new_row()" hidden="true"><i class="fas fa-plus-square"></i></a></th>-->
+                    <th><a class="btn btn-warning add orders" onclick="orders_add_new_row()"><i class="fas fa-plus-square"></i></a></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for result_line in orders %}
+                <tr><td>{{loop.index}}</td>
+<!--                    <td><input id="{{result_line.id}}" class="input edit" type="text" value="{{result_line.name}}" readonly="true"/></td>-->
+<!--                    <td>-->
+<!--                        <select class="form-select orders" aria-label="Default select example" disabled="true">-->
+<!--                            <option selected>{{result_line.name}}</option>-->
+<!--                            {% for result_line_scope_dir in scope_dir %}-->
+<!--                            {% if  result_line_scope_dir.name != result_line.name %}-->
+<!--                            <option>{{result_line_scope_dir.name}}</option>-->
+<!--                            {% endif %}-->
+<!--                            {% endfor %}-->
+<!--                        </select>-->
+<!--                    </td>-->
+                    <td>
+                        <select class="form-select orders" aria-label="Default select example" disabled="true">
+                            <option id="{{result_line.id_scope_dir}}" selected>{{result_line.describe}}</option>
+                            {% for result_line_scope_dir in scope_dir %}
+                            {% if  result_line_scope_dir.name != result_line.name %}
+                            <option id="{{result_line_scope_dir.id}}">{{result_line_scope_dir.describe}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td><input id="{{result_line.id}}" class="input edit orders parameters" type="text" value="{{result_line.parameters}}" readonly="true"/></td>
+                    <td><input class="input edit orders executors" type="text" value="{{result_line.executors}}" readonly="true"/></td>
+                    <td><input class="input edit scheduler_dir job_frequency" type="text" value="{{result_line.job_frequency}}" readonly="true"/></td>
+                    <td><input class="input edit scheduler_dir job_frequency_type" type="text" value="{{result_line.job_frequency_type}}" readonly="true"/></td>
+<!--                    <td><a class="input edit orders executors url" href="{{ url_for('chart_datetime_picker') }}?id_orders={{ result_line.id }}&id_scope_describe={{ result_line.name }} - {{result_line.parameters }}">Посмотреть график на {{result_line.executors}}</a></td>-->
+                    <td><a class="btn btn-warning edit orders" href=""><i class="fas fa-edit"></i></a>
+                        <button class="btn btn-warning save orders" hidden="true"><i class="far fa-save"></i></button>
+                        {% if  result_line.status!= 'start'%}
+                        <button class="btn btn-success status orders"><i class="fas fa-play-circle"></i></button>
+                        {% endif %}
+                        {% if  result_line.status== 'start'%}
+                        <button class="btn btn-danger status orders"><i class="far fa-stop-circle"></i></button>
+                        <a class="btn btn-outline-success chart orders" href="{{ url_for('chart_datetime_picker') }}?id_orders={{ result_line.id }}&id_scope_describe={{ result_line.name }} - {{result_line.parameters }}"><i class="fas fa-chart-line"></i></a>
+<!--                        <button class="btn btn-info status orders"><i class="far fa-bell"></i></button>-->
+                        {% endif %}
+                        <a class="btn btn-secondary delete orders" href="" hidden="true"><i class="far fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="News" class="tabcontent">
+            <h3>News</h3>
+            <p>Some news this fine day!</p>
+        </div>
+
+        <div id="Contact" class="tabcontent">
+            <h3>Contact</h3>
+            <p>Get in touch, or swing by for a cup of coffee.</p>
+        </div>
+
+        <div id="Test" class="tabcontent">
+<!--            <h3>Пороги</h3>-->
+<!--            <p></p>-->
+            <table id="table_orders_thresholds">
+                <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Warning</th>
+                    <th>Уведомления</th>
+                    <th>Critical</th>
+                    <th>Уведомления</th>
+                    <th><a class="btn btn-warning add orders" onclick="orders_add_new_row()"><i class="fas fa-plus-square"></i></a></th>
+                </tr>
+                </thead>
+                <tbody>
+<!--                {% for result_line in orders %}-->
+<!--                <tr><td>{{loop.index}}</td>-->
+<!--                    <td>-->
+<!--                        <select class="form-select orders" aria-label="Default select example" disabled="true">-->
+<!--                            <option id="{{result_line.id_scope_dir}}" selected>{{result_line.describe}}</option>-->
+<!--                            {% for result_line_scope_dir in scope_dir %}-->
+<!--                            {% if  result_line_scope_dir.name != result_line.name %}-->
+<!--                            <option id="{{result_line_scope_dir.id}}">{{result_line_scope_dir.describe}}</option>-->
+<!--                            {% endif %}-->
+<!--                            {% endfor %}-->
+<!--                        </select>-->
+<!--                    </td>-->
+<!--                    <td><input id="{{result_line.id}}" class="input edit orders" type="text" value="{{result_line.parameters}}" readonly="true"/></td>-->
+<!--                    <td><input class="input edit orders executors" type="text" value="{{result_line.executors}}" readonly="true"/></td>-->
+<!--                    <td><input class="input edit scheduler_dir job_frequency" type="text" value="{{result_line.job_frequency}}" readonly="true"/></td>-->
+<!--                    <td><input class="input edit scheduler_dir job_frequency_type" type="text" value="{{result_line.job_frequency_type}}" readonly="true"/></td>-->
+<!--                    &lt;!&ndash;                    <td><a class="input edit orders executors url" href="{{ url_for('chart_datetime_picker') }}?id_orders={{ result_line.id }}&id_scope_describe={{ result_line.name }} - {{result_line.parameters }}">Посмотреть график на {{result_line.executors}}</a></td>&ndash;&gt;-->
+<!--                    <td><a class="btn btn-warning edit orders" href=""><i class="fas fa-edit"></i></a>-->
+<!--                        <button class="btn btn-warning save orders" hidden="true"><i class="far fa-save"></i></button>-->
+<!--                        {% if  result_line.status!= 'start'%}-->
+<!--                        <button class="btn btn-success status orders"><i class="fas fa-play-circle"></i></button>-->
+<!--                        {% endif %}-->
+<!--                        {% if  result_line.status== 'start'%}-->
+<!--                        <button class="btn btn-danger status orders"><i class="far fa-stop-circle"></i></button>-->
+<!--                        <a class="btn btn-outline-success chart orders" href="{{ url_for('chart_datetime_picker') }}?id_orders={{ result_line.id }}&id_scope_describe={{ result_line.name }} - {{result_line.parameters }}"><i class="fas fa-chart-line"></i></a>-->
+<!--                        <button class="btn btn-info status orders"><i class="far fa-bell"></i></button>-->
+<!--                        {% endif %}-->
+<!--                        <a class="btn btn-secondary delete orders" href=""><i class="far fa-trash-alt"></i></a>-->
+<!--                    </td>-->
+<!--                </tr>-->
+<!--                {% endfor %}-->
+                </tbody>
+            </table>
+
+        </div>
+
+        <div id="Profile" class="tabcontent">
+            <h3>Профайл</h3>
+            <p></p>
+
+            <table id="myTable" >
+                <thead>
+                <tr>
+                    <th>Какой-то контекст</th>
+                    <th>Какие-то кнопки</th>
+                </tr>
+                </thead>
+                {% for result_line in test %}
+                <tr>
+                    <td><input id="{{result_line.id}}" class="input edit test" type="text" value="{{result_line.context1}}" readonly="true"/></td>
+                    <td><button class="btn btn-warning edit test"><i class="fas fa-edit"></i></button><button class="btn btn-warning save test" hidden="true"><i class="far fa-save"></i></button> <button class="btn btn-warning delete test"><i class="far fa-trash-alt"></i></button></td>
+                    <!--                    <td><a class="btn btn-warning" href="javascript:deleteRow(this);"><i class="icon-remove"></i></a></td>-->
+                </tr>
+                {% endfor %}
+            </table>
+            <button type="button" onclick="test_add_new_row()">Add new row</button>
+
+            <div class="form-group">
+                <a for="collapseOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" class="btn btn-primary">+ addInfo</a>
+                <div id="collapseOne" class="collapse">
+                    <textarea class="form-control" rows="5"></textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <a for="collapseTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseOne" class="btn btn-info">+ subtitle</a>
+                <input type="text" class="form-control collapse" id="collapseTwo">
+            </div>
+
+
+
+
+        </div>
+
 <!--<a href="{{ url_for('authorization_blueprint.logout') }}">Выйти</a>-->
 <!--<form class="form-horizontal" action="/logout">-->
 <!--        <ul class="bigFont">-->
@@ -195,38 +283,583 @@ InClouds (c)
 <!--        </ul>-->
     </div>
 </div>
+</ul>
 
 
+<script>
+    // редактирование заказов
+    $('body').on('click', '.btn.btn-warning.edit.orders', function(e) {
+        e.preventDefault();
+        var index_row = $(this).closest('tr').index();
+        console.log("Редактируем заказы: выбрана строка - "+ (index_row+1));
+        const editIndex=$(this).closest('tr').index()
+        $(this).closest('tr').children().children(".form-select.orders").removeAttr("disabled")
+        $(this).closest('tr').children().children(".input.edit.orders").removeAttr("readonly")
+        $(this).closest('tr').children().children(".btn.btn-warning.edit.orders").attr("hidden","true")
+        $(this).closest('tr').children().children(".btn.btn-warning.save.orders").removeAttr("hidden")
+        $(this).closest('tr').children().children(".form-select.orders").attr("style","background-color: #07ffc5;")
+        $(this).closest('tr').children().children(".input.edit.orders").attr("style","background-color: #07ffc5;")
+        $(this).closest('tr').children().children(".input.edit.scheduler_dir").removeAttr("readonly")
+        $(this).closest('tr').children().children(".input.edit.scheduler_dir").attr("style","background-color: #07ffc5;")
+    });
+    // сохранение заказов
+    $('body').on('click', '.btn.btn-warning.save.orders', function(e) {
+        e.preventDefault();
+        var index_row = $(this).closest('tr').index();
+        console.log("Сохраняем заказы: выбрана строка - "+ (index_row+1));
+        $(".btn.btn-warning.add.orders").removeAttr("hidden")
+        $(this).closest('tr').children().children(".btn.btn-warning.save.orders").attr("hidden","true")
+        $(this).closest('tr').children().children(".btn.btn-warning.edit.orders").removeAttr("hidden")
+        $(this).closest('tr').children().children(".form-select.orders").attr("style","background-color: none;")
+        $(this).closest('tr').children().children(".form-select.orders").attr("disabled","true;")
+        $(this).closest('tr').children().children(".input.edit.orders").attr("style","background-color: none;")
+        $(this).closest('tr').children().children(".input.edit.orders").attr("readonly","true")
+        $(this).closest('tr').children().children(".input.edit.scheduler_dir").attr("style","background-color: none;")
+        $(this).closest('tr').children().children(".input.edit.scheduler_dir").attr("readonly","true")
+        var id = $(this).closest('tr').children().children(".input.edit.orders").attr("id")
+        var id_scope_dir = $(this).closest('tr').children().children(".form-select.orders").val()
+        var parameters = $(this).closest('tr').children().children(".input.edit.orders.parameters").val()
+        var executors = $(this).closest('tr').children().children(".input.edit.orders.executors").val()
+        var job_frequency = $(this).closest('tr').children().children(".input.edit.scheduler_dir.job_frequency").val()
+        var job_frequency_type = $(this).closest('tr').children().children(".input.edit.scheduler_dir.job_frequency_type").val()
+        var date_change = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        // console.log("date_change: "+date_change);
+        // это нужно чтобы закрыть идентификацию выбора пользователем из списка scope_dir для передачи на update и delete
+        // роверяем что обязательно заполнено поле параметров
+        if (parameters!="") {
+            var obj = JSON.parse(scope_dir);
+            obj.forEach(function (object) {
+                if (object.describe == id_scope_dir) {
+                    id_scope_dir = object.id
+                }
+            });
+            // отправляем в виде json на api для update
+            var json_context = {
+                "id": id,
+                "id_users": id_users,
+                "id_scope_dir": id_scope_dir,
+                "parameters": parameters,
+                "executors": executors,
+                "job_frequency": job_frequency,
+                "job_frequency_type": job_frequency_type,
+                "date_change": date_change
+            }
+            console.log(json_context);
+            console.log("id: " + id);
+            let url
+            if (id != undefined)
+                url = '/orders/update'
+            if (id == undefined || id == "")
+                url = '/orders/insert'
+                console.log("Lets Insert")
+                console.log($(this).closest('tr').children().children("manager_cell").prevObject[6].innerHTML)
+                $(this).closest('tr').children().children(".btn.btn-warning.save.orders").attr("hidden","hidden")
+                $(this).closest('tr').children().children(".btn.btn-warning.edit.orders").removeAttr("hidden")
+                $(this).closest('tr').children().children(".btn.btn-success.status.orders").removeAttr("hidden")
+                $(this).closest('tr').children().children(".btn.btn-warning.delete.orders").attr("hidden","hidden")
+
+
+            // function httpGetAsync(theUrl, json_context, callback)
+            // {
+            //     var xmlHttp = new XMLHttpRequest();
+            //     xmlHttp.onreadystatechange = function() {
+            //         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            //             callback(xmlHttp.responseText);
+            //     }
+            //     xmlHttp.open("GET", theUrl, true); // true for asynchronous
+            //     xmlHttp.send(JSON.stringify(json_context));
+            // }
+            //
+            // var result=httpGetAsync(url, json_context)
+
+            // const http = new XMLHttpRequest()
+            //
+            // http.open("POST", url)
+            // http.send(JSON.stringify(json_context))
+            //
+            // http.onload = () => console.log(http.responseText)
+
+             // json_context =
+             //    {
+             //        "date_change": "2021-01-11 16:23:50",
+             //        "executors": "msk_01",
+             //        "id": "",
+             //        "id_scope_dir": 1,
+             //        "id_users": 2,
+             //        "job_frequency": "30",
+             //        "job_frequency_type": "any",
+             //        "parameters": "mtstv-recs.mts.ru"
+             //    }
+
+            // fetch(url, {
+            //     method: "POST",
+            //     body: JSON.stringify(json_context)
+            // }).then(res => {
+            //     console.log("Request complete! response:", res);
+            // });
+
+            var result = http_request(url, json_context, this);
+
+            // console.log("msk_scope: " + msk_scope);
+            // http_request(msk_scope + url, json_context);
+        } else if (parameters=="") {
+            $(this).closest('tr').children().children(".input.edit.orders.parameters").attr("style","background-color: #ff07de;")
+            $(this).closest('tr').children().children(".input.edit.orders.parameters").removeAttr("readonly")
+        }
+    });
+    // управление заказами
+    $('body').on('click', '.btn.btn-success.status.orders', function(e) {
+        e.preventDefault();
+        console.log("Жмякнул старт");
+        var id = $(this).closest('tr').children().children(".input.edit.orders").attr("id")
+        var url = '/orders/status'
+        // отправляем в виде json на api для update
+        var date_change = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        var json_context = {"id":id, "status":"start", "date_change": date_change}
+        console.log(json_context);
+        http_request(url, json_context);
+        http_request(msk_scope+url, json_context);
+    });
+    $('body').on('click', '.btn.btn-danger.status.orders', function(e) {
+        e.preventDefault();
+        console.log("Жмякнул стоп");
+        var id = $(this).closest('tr').children().children(".input.edit.orders").attr("id")
+        var url = '/orders/status'
+        // отправляем в виде json на api для update
+        var date_change = moment(Date.now()).format('YYYY-MM-DD HH:mm:ss');
+        var json_context = {"id":id, "status":"stop", "date_change": date_change}
+        console.log(json_context);
+        http_request(url, json_context);
+        http_request(msk_scope+url, json_context);
+    });
+    function http_request(url,json_context, e) {
+        var xhr = new XMLHttpRequest();   // new HttpRequest instance
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                // alert(xhr.responseText);
+                var jsonResponse = JSON.parse(xhr.responseText);
+                console.log(jsonResponse);
+                // jsonResponse['result'][k]['critical_1']
+                if (url.indexOf('update')>0 || url.indexOf('status')>0) {
+                    console.log("url " + url + " содержит update " + url.indexOf('update') + " или status" + url.indexOf('status'))
+                    reload(url);
+                }
+                if (url.indexOf('insert')>0) {
+                    console.log("insert! orders: "+jsonResponse['result'][0]['orders']+", scheduler_dir: "+jsonResponse['result'][0]['scheduler_dir'])
+                    json_context['orders']=jsonResponse['result'][0]['orders']
+                    json_context['scheduler_dir']=jsonResponse['result'][0]['scheduler_dir']
+                    $(e).closest('tr').children().children(".input.edit.orders").attr("id",jsonResponse['result'][0]['orders'])
+                    console.log(json_context)
+                    document.querySelector('#table_orders').addEventListener('click', ({ target: t }) => {
+                        if (t.classList.contains('.btn.btn-warning.save.orders')) {
+                            const tr = t.closest('tr');  // всё, идентифицировали
+                            console.log(tr);
+                            // let id = jsonResponse['result'][0]['orders'];
+                            // console.log(id)
+                            // tr.getElementsByClassName(".input.edit.orders").id=id;
+                            // console.log(tr.getElementsByClassName(".input.edit.orders").id);
+                        }
+                    });
+                    var xhr_insert = new XMLHttpRequest();
+                    xhr_insert.open("POST", msk_scope+url, true)
+                    xhr_insert.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+                    xhr_insert.onreadystatechange = function() {
+                        if(xhr_insert.readyState == 4 && xhr_insert.status == 200) {
+                            var jsonResponse = JSON.parse(xhr_insert.responseText);
+                            console.log(jsonResponse);
+                        }
+                    };
+                        xhr_insert.send(JSON.stringify(json_context));
+
+                }
+            };
+        };
+        xhr.send(JSON.stringify(json_context));
+    }
+    // обновляем содержимое таблицы заказов
+    function reload(url){
+        $( "#table_orders" ).load(window.location.href + " #table_orders" );
+        // var container = document.getElementById("table_orders");
+        // var content = container.innerHTML;
+        // container.innerHTML= content;
+        //this line is to watch the result in console , you can remove it later
+        console.log("Refreshed: "+url);
+    }
+    // добавить новый заказ
+    function orders_add_new_row() {
+        $(".btn.btn-warning.add.orders").attr("hidden","true")
+        var table = document.getElementById("table_orders");
+        var totalRowCount = table.rows.length;
+        console.log("Всего строк: "+totalRowCount);
+        var row = table.insertRow(totalRowCount);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+        var cell6 = row.insertCell(5);
+        var cell7 = row.insertCell(6);
+        console.log("scope_dir: "+scope_dir);
+        var obj = JSON.parse(users);
+        obj.forEach(function(object) {
+            if (object.login==login) {id_users=object.id}
+        });
+        console.log("id_users: "+id_users);
+        var obj = JSON.parse(scope_dir);
+        var option = "<select class=\"form-select orders\" aria-label=\"Default select example\" style=\"background-color: #07ffc5;\">";
+        for (var key in obj) {
+            if (key==0){
+                option = option + "<option id=\""+obj[key].id+"\" selected>"+obj[key].describe+"</option>";
+            }
+            else {
+                option = option +"<option id=\""+obj[key].id+"\">"+obj[key].describe+"</option>";
+                console.log(key);
+            }
+        }
+        option = option + "</select>";
+        console.log(option);
+        cell1.innerHTML = totalRowCount;
+        cell2.innerHTML = option;
+        cell3.innerHTML = "<input id=\"\" class=\"input edit orders parameters\" type=\"text\" value=\"\" style=\"background-color: #07ffc5;\"/>";
+        cell4.innerHTML = "<input class=\"input edit orders executors\" type=\"text\" value=\"msk_01\" style=\"background-color: #07ffc5;\"/>";
+        cell5.innerHTML = "<input class=\"input edit scheduler_dir job_frequency\" type=\"text\" value=\"40\" style=\"background-color: #07ffc5;\"/>";
+        cell6.innerHTML = "<input class=\"input edit scheduler_dir job_frequency_type\" type=\"text\" value=\"any\" style=\"background-color: #07ffc5;\"/>";
+        cell7.innerHTML = "<button class=\"btn btn-warning save orders\"><i class=\"far fa-save\"></i><button class=\"btn btn-warning edit orders\" hidden='hidden'><i class=\"fas fa-edit\"></i></button><button class=\"btn btn-success status orders\" hidden='hidden'><i class=\"fas fa-play-circle\"></i></button> <a class=\"btn btn-warning delete orders\"><i class=\"far fa-trash-alt\"></i></a>";
+    }
+    // удаление строк в таблице
+    $('body').on('click', '.btn.btn-warning.delete.orders', function(e) {
+        // e.preventDefault();
+        console.log("Удаляем: "+$(this).closest('tr').index());
+        $(this).closest('tr').remove();
+        location.reload();
+        $(".btn.btn-warning.add.orders").attr("hidden","true")
+        // reload("");
+    });
+
+</script>
+
+
+<script>
+    // ==================================================================================
+    // для тестирования формы по редактированию/добавлению новых/удалению строк в таблице
+    // добавить строку в таблице
+    function test_add_new_row() {
+        var table = document.getElementById("myTable");
+        var totalRowCount = table.rows.length;
+        console.log("Всего строк: "+totalRowCount);
+        var row = table.insertRow(totalRowCount);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        cell1.innerHTML = "<input class=\"input edit test\" type='text' value='Новая строчка "+totalRowCount+"' style='background-color: #07ffc5;'/>";
+        cell2.innerHTML = "<a class=\"btn btn-warning edit test\" hidden=\"true\"><i class=\"fas fa-edit\"></i></a><button class=\"btn btn-warning save test\"><i class=\"far fa-save\"></i></button> <a class=\"btn btn-warning delete test\"><i class=\"far fa-trash-alt\"></i></a>";
+        // cell2.innerHTML = "<a class=\"btn btn-warning\" href=\"javascript:deleteRow(this);\"><i class=\"icon-remove\"></i></a>";
+    }
+    // удаление строк в таблице
+    $('body').on('click', '.btn.btn-warning.delete.test', function(e) {
+        e.preventDefault();
+        $(this).closest('tr').remove();
+        console.log("Удаляем: "+$(this).closest('tr').index());
+        var id = $(this).closest('tr').children().children(".input.edit.test").attr("id")
+        var context1 = $(this).closest('tr').children().children(".input.edit.test").val()
+        var json_context = {"id":id, "context1":context1}
+        console.log(json_context);
+        let url
+        if (id!=undefined)
+            url = '/test/delete'
+        var xhr = new XMLHttpRequest();   // new HttpRequest instance
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                // alert(xhr.responseText);
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(json_context));
+        console.log(xhr.responseText);
+    });
+    // редактирование строк в таблице
+    $('body').on('click', '.btn.btn-warning.save.test', function(e) {
+        e.preventDefault();
+        console.log("Save "+$(this).closest('tr').index());
+        $(this).closest('tr').children().children(".btn.btn-warning.save").attr("hidden","true")
+        $(this).closest('tr').children().children(".btn.btn-warning.edit").removeAttr("hidden")
+        $(this).closest('tr').children().children(".input.edit.test").attr("style","background-color: none;")
+        $(this).closest('tr').children().children(".input.edit.test").attr("readonly","true")
+        var id = $(this).closest('tr').children().children(".input.edit.test").attr("id")
+        var context1 = $(this).closest('tr').children().children(".input.edit.test").val()
+        console.log($(this).closest('tr').children().children(".input.edit.test").attr("id"));
+        console.log($(this).closest('tr').children().children(".input.edit.test").attr("value"));
+        console.log($(this).closest('tr').children().children(".input.edit.test").val());
+        // console.log($( "input[class*='edit']" ));
+        // console.log($( "input" ).toggleClass( "input edit" ));
+        // console.log($( "input[class~='edit']" ).val());
+        // console.log($( "input[id~='1']" ));
+        var json_context = {"id":id, "context1":context1}
+        console.log(json_context);
+        let url
+        if (id!=undefined)
+            url = '/test/update'
+        if (id==undefined)
+            url = '/test/insert'
+        var xhr = new XMLHttpRequest();   // new HttpRequest instance
+        xhr.open("POST", url, true)
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.onreadystatechange = function() {
+            if(xhr.readyState == 4 && xhr.status == 200) {
+                // alert(xhr.responseText);
+                console.log(xhr.responseText);
+            }
+        };
+        xhr.send(JSON.stringify(json_context));
+        console.log(xhr.responseText);
+
+        // var req = new XMLHttpRequest();
+        // req.overrideMimeType("application/json");
+        // req.open('GET', url, true);
+        // req.onload  = function() {
+        //     var jsonResponse = JSON.parse(req.responseText);
+        //     console.log(jsonResponse);
+        // };
+        // req.send(JSON.stringify(json_context));
+
+        // console.log(JSON.parse(json_context));
+
+        // var req = new XMLHttpRequest();
+        // req.overrideMimeType("application/json");
+
+        // req.open('POST', url, true);
+        // req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        // req.onreadystatechange = function() {//Call a function when the state changes.
+        //     if(req.readyState == 4 && req.status == 200) {
+        //         alert(req.responseText);
+        //         console.log(req.responseText);
+        //     }
+        // }
+
+        // $.post(url, { json_string:JSON.stringify(json_context) });
+
+        // let user = {
+        //     name: 'John',
+        //     surname: 'Smith'
+        // };
+        // let json_context = {"id": "1", "context1": "xyz123хер1sdfsdf"}
+
+        // let response = fetch(url, {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json;charset=utf-8'
+        //     },
+        //     body: JSON.stringify(json_context)
+        // });
+
+        // fetch('http://localhost:5000/test_update')
+        //     .then((response) => {
+        //         return response.json();
+        //     })
+        //     .then((data) => {
+        //         console.log(data);
+        //     });
+
+        // console.log(response)
+
+        // fetch(url, options).then(async (response) => {
+        //     const data = await response.json();
+        //     console.log(data)
+        // })
+
+        // let result = response.json();
+        // alert(result.message);
+        // console.log(result.message);
+
+    });
+    // редактирование строк в таблице
+    $('body').on('click', '.btn.btn-warning.edit.test', function(e) {
+        e.preventDefault();
+        console.log($(this).closest('tr').index());
+        // console.log($(this).id);
+        const editIndex=$(this).closest('tr').index()
+        $(this).closest('tr').children().children(".btn.btn-warning.edit").attr("hidden","true")
+        $(this).closest('tr').children().children(".btn.btn-warning.save").removeAttr("hidden")
+        console.log($(this).closest('tr').children().children("button.btn.btn-warning.save"));
+
+        // console.log($(this).closest('tr').children().children().children(':input'));
+        // console.log($(":input[type=text][readonly='readonly']").val());
+        $(this).closest('tr').children().children().removeAttr('readonly');
+
+        // $(this).closest('tr').children().children().attr("style","background-color: #07ffc5; border: red; border-width: 10;");
+        // $(this).closest('tr').children().children().setAttribute("style","background-color: yellow;");
+        // console.log($(this).closest('tr').children().children());
+        // $(this).closest('tr').children().children().setAttribute("style", "background-color: red;");
+        // console.log(document.querySelectorAll( '.input.edit' )[0]);
+        const editInputs = document.querySelectorAll( '.input.edit.test' );
+
+        // var editBttns = $(this).querySelectorAll( '.btn.btn-warning.edit' );
+        // editBttns.forEach( // перебираем все элементы массива array
+        //     function(element){
+        //         console.log(element);
+        //     }
+        // );
+        editInputs.forEach( // перебираем все элементы массива array
+            function(element,index){
+                if (index==editIndex){
+                    console.log(element);
+                    // element.attr("style","background-color: #07ffc5; border: red; border-width: 10;");
+                    element.setAttribute("style","background-color: #07ffc5; border: red; border-width: 10;")
+                    // element.attributes("style","background-color: #07ffc5; border: red; border-width: 10;")
+                    console.log("Inputs: "+index+": "+element.outerHTML);
+                }
+            }
+        );
+        // saveButtons.forEach( // перебираем все элементы массива array
+        //     function(element,index){
+        //         if (index==editIndex){
+        //             console.log(element);
+        //             // // element.attr("style","background-color: #07ffc5; border: red; border-width: 10;");
+        //             // element.setAttribute("style","background-color: #07ffc5; border: red; border-width: 10;")
+        //             // // element.attributes("style","background-color: #07ffc5; border: red; border-width: 10;")
+        //             console.log("Buttons: "+index+": "+element.outerHTML);
+        //         }
+        //     }
+        // );
+
+        // var editBttns_1 = $(this)
+        // editBttns_1.forEach( // перебираем все элементы массива array
+        //     function(element){
+        //         console.log(element);
+        //     }
+        // );
+
+        // console.log(delBttns);
+        // console.log(delBttns.length);
+
+        // console.log(editBttns);
+        // $('input[type=text]').removeAttr('readonly');
+    });
+
+</script>
+
+
+<script>
+    function myFunction_delete(row) {
+        console.log(row);
+        var table = document.getElementById("myTable");
+        var i = row.parent.parent.rowIndex;
+        console.log("Определяем строку по которой нажали кнопку: "+i);
+        table.deleteRow(i);
+    }
+    function deleteRow(btn) {
+        // var i = r.parentNode.parentNode.rowIndex;
+        // document.getElementById("myTable").deleteRow(i);
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+
+    function del_row(myTable) {
+        var table = document.getElementById(myTable);
+
+        var totalRowCount = $("#orders_table tr").length;
+        var rowCount = $("#orders_table td").closest("tr").length;
+        var columns = document.getElementById('orders_table').rows[0].cells.length
+        console.log("totalRowCount: "+totalRowCount+", rowCount: "+rowCount+", columns: "+columns);
+
+        var row = table.getElementsByTagName('tr');
+        var rows = table.getElementsByTagName('tr');
+        var cells = table.getElementsByTagName('td');
+        // console.log("rows: "+rows+", cells: "+cells);
+        console.log(table.getElementsByTagName('td').length);
+        var row = row[row.length-1].outerHTML;
+        //var row = document.getElementById("myTable");
+        var x = table.insertRow(row);
+        var e = table.rows.length-1;
+        var l = table.rows[e].cells.length;
+        //x.innerHTML = "&nbsp;";
+        console.log("orders_table: x - "+ x+", e - "+ e+", l - "+ l);
+    }
+    function add_new_row(myTable){
+            var table = document.getElementById(myTable);
+            var totalRowCount = table.rows.length;
+            console.log("Всего строк: "+totalRowCount);
+            var row = table.insertRow(totalRowCount);
+            var cell1 = row.insertCell(0);
+            var cell2 = row.insertCell(1);
+            var cell3 = row.insertCell(2);
+            var cell4 = row.insertCell(3);
+            var cell5 = row.insertCell(4);
+            var cell6 = row.insertCell(5);
+            cell1.innerHTML = totalRowCount;
+            cell2.innerHTML = "Новая строчка "+totalRowCount;
+            cell3.innerHTML = "Новая строчка "+totalRowCount;
+            cell4.innerHTML = "Новая строчка "+totalRowCount;
+            cell5.innerHTML = "Новая строчка "+totalRowCount;
+            cell6.innerHTML = "<a class=\"btn btn-warning edit\" href=\"\"><i class=\"icon-edit\"></i></a> <a class=\"btn btn-warning delete\" href=\"\"><i class=\"icon-remove\"></i></a>";
+            // cell2.innerHTML = "<a class=\"btn btn-warning\" href=\"javascript:deleteRow(this);\"><i class=\"icon-remove\"></i></a>";
+    }
+
+    // управление tabcontent
+    function openPage(pageName,elmnt,color) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].style.backgroundColor = "";
+        }
+        document.getElementById(pageName).style.display = "block";
+        elmnt.style.backgroundColor = color;
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen").click();
+</script>
 
 
 <script type="text/javascript">
+    var id_users;
     var user = '{{ user.company }}';
+    var login = '{{ user.login }}';
+    var users = '{{ users | tojson }}';
     var metrics = '{{metrics}}';
-    var orders = '{{orders}}';
-    console.log("user: "+ user)
+    var orders = '{{ orders | tojson }}';
+    var test = '{{test | tojson}}';
+    var scope_dir = '{{scope_dir | tojson }}';
+    var msk_scope = '{{msk_scope | safe}}';
+    console.log("login: "+ login)
+    console.log("msk_scope: "+ msk_scope)
+    // console.log("users: "+ users)
     console.log("metrics: "+ metrics)
     console.log("orders: "+ orders)
+    console.log("test: "+ test)
+    console.log("scope_dir: "+ scope_dir)
+
+    // var example = [{'id_orders':62,'job_frequency':'40','job_frequency_type':'any'}]
+    // example=JSON.stringify(example)
+    // console.log("id_orders: "+example[0]["id_orders"])
 
     URL_path=window.location.origin+window.location.pathname+window.location.search
     console.log("URL = "+URL_path)
     window.history.replaceState({}, '',"/main")
-    $(document).ready(function() {
-        var table = $('#example').DataTable({
-            columnDefs: [{
-                orderable: false,
-                targets: [1,2,3]
-            }]
-        });
+    // $(document).ready(function() {
+    //     var table = $('#example').DataTable({
+    //         columnDefs: [{
+    //             orderable: false,
+    //             targets: [1,2,3]
+    //         }]
+    //     });
 
-        $('button').click( function() {
-            var data = table.$('input, select').serialize();
-            alert(
-                "The following data would have been submitted to the server: \n\n"+
-                data.substr( 0, 120 )+'...'
-            );
-            return false;
-        } );
-    } );
+        // $('button').click( function() {
+        //     var data = table.$('input, select').serialize();
+        //     alert(
+        //         "The following data would have been submitted to the server: \n\n"+
+        //         data.substr( 0, 120 )+'...'
+        //     );
+        //     return false;
+        // } );
+    // } );
 
 
     // $('#example').Tabledit({
@@ -278,8 +911,6 @@ InClouds (c)
     //         editable: [[1, 'First Name'], [2, 'Last Name'], [3, 'Username']]
     //     }
     // });
-
-
 </script>
 
 

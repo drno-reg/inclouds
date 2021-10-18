@@ -17,6 +17,9 @@
     - debug: msg="{{dockerps.stdout}}"
     - name: stop and delete docker container
       shell: |
+        docker stop inclouds_msk_scheduler
+        docker rm inclouds_msk_scheduler
+        docker rmi drnoreg/inclouds_msk_scheduler:0.1
         docker load -i /opt/docker/images/inclouds_msk_scheduler.tar
     #        docker stop inclouds_msk_scope
     #        docker rm inclouds_msk_scope

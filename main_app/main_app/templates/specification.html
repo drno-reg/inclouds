@@ -1,0 +1,469 @@
+{% extends 'base.html' %}
+
+{% block title %}
+InClouds (c)
+{% endblock %}
+{% block head %}
+
+    <ul class="navbar-nav ml-auto">
+            <a class="p-2 text-dark">{{ user.name }} {{ user.surname }} [{{ user.company }}]</a>
+            <a class="btn btn-warning" href="/logout">Выйти</a>
+        </ul>
+
+    {% endblock %}
+{% block body %}
+
+<style>
+    .bigFont li{
+        font-size:20px;
+    }
+</style>
+
+<style>
+    * {box-sizing: border-box}
+
+    /* Set height of body and the document to 100% */
+    body, html {
+        height: 100%;
+        margin: 0;
+        font-family: Arial;
+    }
+
+    /* Style tab links */
+    .tablink {
+        background-color: ghostwhite;
+        color: black;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        font-size: 17px;
+        width: 25%;
+    }
+    .input.edit{
+        box-shadow: none;
+        border: none;
+        border-width: 0;
+        box-shadow: none;
+    }
+    .tablink:hover {
+        background-color: #cddbcd;
+    }
+
+    /* Style the tab content (and add height:100% for full page content) */
+    .tabcontent {
+        color: black;
+        display: none;
+        padding: 100px 20px;
+        height: 100%;
+    }
+
+    #Orders {background-color: white;}
+    #News {background-color: white;}
+    #Contact {background-color: white;}
+    #About {background-color: white;}
+</style>
+
+
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='jquery.dataTables/jquery-3.5.1.js') }}"></script>
+<script src="{{ url_for('static', filename='bootstrap-4.5.3-dist/js/bootstrap.js') }}"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='jquery.dataTables/jquery.dataTables.min.css') }}">
+<script src="{{ url_for('static', filename='jquery.dataTables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ url_for('static', filename='moment-2.29.1/js/moment.js') }}"></script>
+
+<!--<script src="{{ url_for('static', filename='jquery-tabledit-1.2.3/jquery.tabledit.js') }}"></script>-->
+
+
+<!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>-->
+
+
+
+<!--<script src="{{ url_for('static', filename='datatables-1.10.22/datatables.js') }}"></script>-->
+<!-- D3.js -->
+<!--<script src="{{ url_for('static', filename='datatables-1.10.22/DataTables-1.10.22/js/jquery.dataTables.min.js') }}"></script>-->
+
+<!--<script src="{{ url_for('static', filename='jquery-tabledit-1.2.3/jquery.tabledit.js') }}"></script>-->
+
+<!--<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">-->
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+<!--<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">-->
+<!--<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>-->
+<!--<script src="https://www.jqueryscript.net/demo/Creating-A-Live-Editable-Table-with-jQuery-Tabledit/jquery.tabledit.js"></script>-->
+<!--<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css">-->
+<!--<script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>-->
+
+<div class="container">
+    <div class="page-header page-header-with-icon mg-t" style="text-align:left;">
+
+    <ul class="bigFont">
+
+
+<!--        <table id="table_no" border="green">-->
+<!--            <tr><th>Name</th> <td>Coffee</td></tr>-->
+<!--            <tr><th>Value</th> <td>100</td></tr>-->
+<!--            <tr><th>Count</th> <td>1</td></tr>-->
+<!--        </table>-->
+
+
+
+        <table id="table_orders" border="green">
+            <thread>
+                <tr><th>Name</th><th>Value</th><th>Count</th><th><button class="add_order">add</button></th>
+            </thread>
+            <tr>
+                <td>Coffee</td><td>100</td><td><input type="text" id="input_count_1" class="input_count" value="1"></td><td><button class="save_order">save</button></td>
+            </tr>
+            <tr>
+                <td>Tea</td><td>200</td><td><input type="text" class="input_count" value="2"></td><td><button class="save_order" >save</button></td>
+            </tr>
+            <tr>
+                <td>Burbon</td><td>400</td><td><input type="text" class="input_count" value="3"></td><td><button class="save_order" >save</button></td>
+            </tr>
+        </table>
+
+
+        <button onclick="myFunction()" hidden="">Request</button>
+
+        Demo <p id="add"></p>
+        Save <p id="save"></p>
+         <p id="request"></p> <button class="request" onclick="console.log(request_ex(3));">Request</button>
+
+        <p id="showData"></p>
+        <p id="scheduler_log"></p>
+
+        <div id="table_mountains"></div>
+
+    </ul>
+
+        <script>
+            // document.querySelector('table').addEventListener('click', ({ target: t }) => {
+              document.querySelector('#table_orders').addEventListener('click', ({ target: t }) => {
+                if (t.classList.contains('input_count').id!="undefined"){
+                    console.log(t.classList.contains('input_count').id);
+                }
+                if (t.classList.contains('save_order')) {
+                    const tr = t.closest('tr');  // всё, идентифицировали
+                    let id = tr.getElementsByClassName("input_count").valueOf()[0].value;
+                    console.log("save_orders: "+save_orders(id));
+                    console.log(id)
+                    tr.getElementsByClassName("input_count").id=id;
+                    console.log(tr.getElementsByClassName("input_count").id);
+                }
+            });
+            function save_orders(id){
+                console.log("save_orders");
+                console.log(id);
+                return id*2
+            }
+            function request_ex(id){
+                var jsonResponse
+                console.log("request_ex");
+                console.log(id);
+                url = "http://localhost:5000/scheduler_dir/msk_01"
+                var req = new XMLHttpRequest();
+                req.overrideMimeType("application/json");
+                req.open('GET', url, true);
+                req.onload  = function() {
+                    jsonResponse = JSON.parse(req.responseText);
+                    console.log(jsonResponse)
+                    document.getElementById("request").innerHTML=jsonResponse['result'][1]['id'];
+                    return jsonResponse
+                }
+                req.send(null);
+                return jsonResponse
+            }
+
+            function myFunction() {
+                var x = document.getElementsByTagName("LI");
+                document.getElementById("add").innerHTML = x[2].innerHTML;
+            }
+            function getTD(){
+                var x= document.getElementsByTagName("td");
+                document.getElementById("add").innerHTML = x[1].innerHTML;
+            }
+            function saveTR(xThis){
+                console.log(xThis.parentElement)
+
+                var x= document.getElementsByTagName("td");
+                let tr = document.getElementsByClassName( "tr" );
+//document.getElementById("save").innerHTML = tr;
+                var x, i, l;
+                x = document.getElementsByClassName("input_count");
+                console.log(x)
+                console.log(x.item(0).valueOf().value)
+                document.getElementById("save").innerHTML=x.item(0)
+                l = x.items;
+                for (i = 0; i < l; i++) {
+                    document.getElementById("save").innerHTML=x.items[0]
+                }
+            }
+
+        </script>
+
+        <script>
+            var k = 'value';
+            var i = 0;
+            for(i = 1; i < 5; i++) {
+                eval('var ' + k + i + '= ' + i + ';');
+            }
+            console.log("value1=" + value1);
+            console.log("value2=" + value2);
+            console.log("value3=" + value3);
+            console.log("value4=" + value4);
+
+            var obj = {
+                'prop1' : 'test1',
+                'prop2' : 'test2'
+            }
+
+            var keys = Object.keys(obj);
+
+            for (let i = 0; i < keys.length; i++) {
+                var key = keys[i];
+
+                // Here you can use a string value as the property name
+                var prop = obj[key];
+            }
+        </script>
+
+
+        <script>
+            var myBooks = [
+                {
+                    "Book ID": "1",
+                    "Book Name": "Computer Architecture",
+                    "Category": "Computers",
+                    "Price": "125.60"
+                },
+                {
+                    "Book ID": "2",
+                    "Book Name": "Asp.Net 4 Blue Book",
+                    "Category": "Programming",
+                    "Price": "56.00"
+                },
+                {
+                    "Book ID": "3",
+                    "Book Name": "Popular Science",
+                    "Category": "Science",
+                    "Price": "210.40"
+                }
+            ]
+
+
+
+
+
+
+            var col = [];
+            for (var i = 0; i < myBooks.length; i++) {
+                for (var key in myBooks[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            var table = document.createElement("table");
+            var tr = table.insertRow(-1);                   // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th");      // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            for (var i = 0; i < myBooks.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = myBooks[i][col[j]];
+                }
+            }
+
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+
+
+
+
+        </script>
+
+
+<!--        <script>-->
+<!--            url='http://localhost:8228/orders/scheduler_log/4'-->
+
+<!--            var req = new XMLHttpRequest();-->
+<!--            req.overrideMimeType('application/json; charset=utf-8');-->
+<!--            req.open('GET', url, true);-->
+<!--            // req.setRequestHeader('Content-type', 'application/json; charset=utf-8');-->
+<!--            req.onload  = function() {-->
+<!--                if(req.readyState == 4 && req.status == 200) {-->
+<!--                    var jsonResponse = JSON.parse(req.responseText);-->
+<!--                    console.log(jsonResponse['result'])-->
+<!--                    var col = [];-->
+<!--                    for (var i = 0; i < jsonResponse['result'].length; i++) {-->
+<!--                        for (var key in jsonResponse['result'][i]) {-->
+<!--                            if (col.indexOf(key) === -1) {-->
+<!--                                col.push(key);-->
+<!--                            }-->
+<!--                        }-->
+<!--                    }-->
+<!--                    console.log(col)-->
+<!--                    var table = document.createElement("table");-->
+<!--                    var tr = table.insertRow(-1);                   // TABLE ROW.-->
+
+<!--                    for (var i = 0; i < col.length; i++) {-->
+<!--                        var th = document.createElement("th");      // TABLE HEADER.-->
+<!--                        th.innerHTML = col[i];-->
+<!--                        tr.appendChild(th);-->
+<!--                    }-->
+<!--                    for (var i = 0; i < jsonResponse['result'].length; i++) {-->
+
+<!--                        tr = table.insertRow(-1);-->
+
+<!--                        for (var j = 0; j < col.length; j++) {-->
+<!--                            var tabCell = tr.insertCell(-1);-->
+<!--                            tabCell.innerHTML = jsonResponse['result'][i][col[j]];-->
+<!--                        }-->
+<!--                    }-->
+
+
+<!--                    var divContainer = document.getElementById("scheduler_log");-->
+<!--                    divContainer.innerHTML = "";-->
+<!--                    divContainer.appendChild(table);-->
+
+<!--                };-->
+<!--            }-->
+<!--                req.send(JSON.stringify(null));-->
+
+<!--        </script>-->
+
+
+<script>
+
+
+
+    // function generateTableHead(table, data) {
+    //     let thead = table.createTHead();
+    //     let row = thead.insertRow();
+    //     for (let key of data) {
+    //         let th = document.createElement("th");
+    //         let text = document.createTextNode(key);
+    //         th.appendChild(text);
+    //         row.appendChild(th);
+    //     }
+    // }
+    //
+    // function generateTable(table, data) {
+    //     for (let element of data) {
+    //         let row = table.insertRow();
+    //         for (key in element) {
+    //             let cell = row.insertCell();
+    //             let text = document.createTextNode(element[key]);
+    //             cell.appendChild(text);
+    //         }
+    //     }
+    // }
+    //
+    // // let table_mountains = document.querySelector("table");
+    // let table_mountains = document.getElementById("table_mountains");
+    // let data = Object.keys(mountains[0]);
+    // generateTableHead(table_mountains, data);
+    // generateTable(table_mountains, mountains);
+
+    let mountains = [
+        { name: "Monte Falco", height: 1658, place: "Parco Foreste Casentinesi" },
+        { name: "Monte Falterona", height: 1654, place: "Parco Foreste Casentinesi" },
+        { name: "Poggio Scali", height: 1520, place: "Parco Foreste Casentinesi" },
+        { name: "Pratomagno", height: 1592, place: "Parco Foreste Casentinesi" },
+        { name: "Monte Amiata", height: 1738, place: "Siena" }
+    ];
+
+    console.log("mountains: "+mountains.length);
+    console.log("availWidth: "+window.screen.availWidth+", availWidth: "+window.screen.availHeight+", devicePixelRatio: "+window.devicePixelRatio)
+
+    col = [];
+    for (let i = 0; i < mountains.length; i++) {
+        for (let key in mountains[i]) {
+            if (col.indexOf(key) === -1) {
+                col.push(key);
+            }
+        }
+    }
+    table = document.createElement("table");
+
+    let resolution = window.screen.availWidth/window.screen.availHeight
+
+    if (resolution>1) {
+        console.log("ориентация ПК: "+resolution);
+        tr = table.insertRow(-1);                   // TABLE ROW.
+        for (let i = 0; i < col.length; i++) {
+            let th = document.createElement("th");      // TABLE HEADER.
+            th.innerHTML = col[i];
+            tr.appendChild(th);
+        }
+        for (let i = 0; i < mountains.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (let j = 0; j < col.length; j++) {
+                let tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = mountains[i][col[j]];
+            }
+        }
+    } else{
+        console.log("ориентация мобилы: "+resolution);
+        for (let i = 0; i < mountains.length; i++) {
+
+
+            for (let j = 0; j < col.length; j++) {
+                console.log(col[j]+" : "+mountains[i][col[j]])
+                tr = table.insertRow(-1);
+                let th = document.createElement("th");      // TABLE HEADER.
+                th.innerHTML = col[j];
+                let tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = mountains[i][col[j]];
+                tr.appendChild(th);
+                tr.appendChild(tabCell);
+                // tabCell.innerHTML = mountains[i][col[j]];
+
+
+                // let tabCell = tr.insertCell(-1);
+                // tabCell.innerHTML = mountains[i][col[j]];
+                // tr.innerHTML=th;
+                // tr.appendChild(tabCell);
+                // let tabCell = tr.insertCell(-1);
+                // tabCell.innerHTML = mountains[i][col[j]];
+                // let th = document.createElement("th");      // TABLE HEADER.
+                // th.innerHTML = col[i];
+                // tr.appendChild(th);
+
+            }
+
+        }
+
+    }
+
+    console.log(table)
+    divContainer = document.getElementById("table_mountains");
+    divContainer.innerHTML = "";
+    divContainer.appendChild(table);
+
+
+</script>
+
+    </div>
+</div>
+
+
+</form>
+{% endblock %}
+

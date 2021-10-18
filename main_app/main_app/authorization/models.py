@@ -39,6 +39,7 @@ class Users (db.Model, UserMixin):
     surname = db.Column(db.String(128), nullable=False)
     company = db.Column(db.String(128), nullable=False)
     date = db.Column(db.DateTime, default=datetime.utcnow)
+    id_roles = db.Column(db.Integer, db.ForeignKey('roles.id'))
 
     def __repr__(self):
         return '<User %r>' % self.login

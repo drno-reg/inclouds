@@ -38,7 +38,7 @@ def load_configs():
             print("Работаем на хосте тестовой зоны")
             result=load_file_by_lines(PATH)
         else:
-            PATH = '/opt/docker/msk_scope/configs/db.conf'
+            PATH = '/Users/nabaran2/docker/msk_scope/configs/db.conf'
             print("Работаем на хосте разработки")
             result=load_file_by_lines(PATH)
     except:
